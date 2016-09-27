@@ -3,6 +3,7 @@
 
 struct TypVoisins{
 	int voisin;
+	int poid;
 	TypVoisins *voisinSuivant;
 	TypVoisins *voisinPrecedent;
 };
