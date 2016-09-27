@@ -1,0 +1,22 @@
+2 Bibliothèque :
+
+- Manipulation des listes chainées d'un des deux types décrites
+
+
+- Gestion des graphes stockés ( sous la forme d'un tableau de listes d'adjacence)
+
+
+Programme principale = (Bibliothèque + MENU) :
+
+		- Creation
+		- Lecture
+		- InsertionSommet
+		- InsertionArete
+		- SuppressionSommet/Arete
+		- Affichage
+		- Sauvegarde
+		- Quitter
+		
+		
+-> Libération mémoire (valgrind)
+-> Message utilisateur simple lors des manipulation (retour d'erreur analysable)
