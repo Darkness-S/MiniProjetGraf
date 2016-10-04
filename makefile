@@ -1,16 +1,24 @@
 CC=gcc
-CFLAGS=-g
-SRC=$(wildcard *.c)
-OBJ=$(SRC:.c=.o)
+CFLAGS=-g -W -Wall
+
+OBJDIR=obj
+BINDIR=bin
+SRCDIR=src
+INCDIR=include
+
+SRC=$(wildcard $(SRCDIR)/*.c)
+INC=$(wildcard $(INCDIR)/*.h)
+OBJ=$(SRC: $(SRCDIR)/%.c=$(OBJDIR)/%.o)
+
 EXEC=exec
 
-all: $(EXEC)
+all: $(BINDIR)/$(EXEC)
 
-$(EXEC): $(OBJ)
+$(BINDIR)/$(EXEC): $(OBJ)
 	$(CC) -o $@ $(OBJ) $(CFLAGS)
 
-%.o: %.c %.h
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCDIR)%.h
 	$(CC) -o $@ $(CFLAGS) -c $<
 
 clean:
-	rm *.o; rm $(EXEC)
+	rm $(OBJDIR)/*.o; rm $(BINDIR)/$(EXEC)
