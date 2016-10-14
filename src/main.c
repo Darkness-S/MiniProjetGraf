@@ -34,6 +34,9 @@ int main(int argc, char **argv)
 			case 2:
 				printf("%d\n",graphe->nbMaxSommets);
 			break;
+			case 3:
+				insertionSommet(graphe);
+			break;
 			case 7:
 				afficheGraphe(graphe);
 			break;
