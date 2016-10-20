@@ -26,6 +26,17 @@ void creationGraphe(struct TypGraphe *graphe){
 	graphe->nbMaxSommets = nb;
 	graphe->listesAdjacences = malloc (nb*sizeof(struct TypVoisins));
 	
+	int i=0;
+	
+	struct TypVoisins *tab = malloc(sizeof(struct TypVoisins));;
+	while (i<nb){
+		struct TypVoisins *tmpVoisin = malloc(sizeof(struct TypVoisins));
+		tab =  tmpVoisin;
+		tab++;
+		i++;
+	}
+	graphe->listesAdjacences = tab;
+	
 	// Non-orienté
 	graphe->estOriente = 1;
 	
@@ -43,20 +54,40 @@ void insertionSommet(struct TypGraphe *graphe){
 	//else{
 		// Création du sommet : Ajout du voisin fictif "-1"
 		
-		graphe->listesAdjacences++;
-		
+		//struct TypVoisins *VoisinTemp=malloc(sizeof(struct TypVoisins));
+		//VoisinTemp->voisin = -1;
 		while(graphe->listesAdjacences->voisin != NULL){
-			graphe->listesAdjacences++;
-		}
-			
-		struct TypVoisins *tmp = malloc(sizeof(struct TypVoisins));
-		tmp->voisin = -1;
 		
-		graphe->listesAdjacences = tmp; 
+			graphe->listesAdjacences++;
+			
+		}
+		
+		graphe->listesAdjacences->voisin = -1;
+		printf("%d\n",graphe->listesAdjacences->voisin);
+		//g
+		
+		
+		//while( graphe->listesAdjacences->voisin != NULL){
+			
+			//graphe->listesAdjacences++;
+		//}
+		
+		
+		
+		
+		//graphe->listesAdjacences++;
+		
+			
+		//struct TypVoisins *tmp = malloc(sizeof(struct TypVoisins));
+		//tmp->voisin = -1;
+		
+		
 		//graphe->listesAdjacences[num-1]->voisin = -1;
 			
-		printf("%d\n",graphe->listesAdjacences->voisin);
+		
+		//graphe->listesAdjacences++;
 			
+		
 		// FinSi
 	//}
 	
@@ -105,11 +136,15 @@ void afficheGraphe(struct TypGraphe *graphe){
 	printf("# sommets : voisins\n");
 	int i;
 	
+	//printf("%d\n",&graphe->listesAdjacences->voisin);
+	
 	while(graphe->listesAdjacences->voisin != NULL){
 		
 		printf("%d : ",i+1);
 		// Parcous et affichage des voisin + le poid
 		// printf("tust");
+		
+		printf("%d\n",graphe->listesAdjacences->voisin);
 		
 		if(graphe->listesAdjacences->voisin == -1){
 			printf("()");

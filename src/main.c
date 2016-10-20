@@ -41,6 +41,7 @@ int main(int argc, char **argv)
 				afficheGraphe(graphe);
 			break;
 			case 9:
+				free(graphe);
 				quit = 1;
 			break;
 		}
