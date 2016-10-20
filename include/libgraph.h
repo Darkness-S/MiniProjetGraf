@@ -24,7 +24,7 @@ void creationGraphe(struct TypGraphe *graphe){
 	scanf("%d",&nb);
 	
 	graphe->nbMaxSommets = nb;
-	graphe->listesAdjacences = malloc (nb*sizeof(struct TypVoisins));
+	graphe->listesAdjacences = malloc (sizeof(struct TypVoisins*));
 	
 	int i=0;
 	
@@ -56,13 +56,20 @@ void insertionSommet(struct TypGraphe *graphe){
 		
 		//struct TypVoisins *VoisinTemp=malloc(sizeof(struct TypVoisins));
 		//VoisinTemp->voisin = -1;
-		while(graphe->listesAdjacences->voisin != NULL){
+		/*while(graphe->listesAdjacences->voisin != NULL){
 		
 			graphe->listesAdjacences++;
 			
+		}*/
+		int i=0;
+		for(i=0; i<graphe->nbMaxSommets;i++){
+			if(graphe->listesAdjacences[i].voisin == 0 ){
+				graphe->listesAdjacences[i].voisin = -1;
+				break;
+			}
 		}
 		
-		graphe->listesAdjacences->voisin = -1;
+		//graphe->listesAdjacences->voisin = -1;
 		printf("%d\n",graphe->listesAdjacences->voisin);
 		//g
 		
