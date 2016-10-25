@@ -45,8 +45,7 @@ void insertionSommet(struct TypGraphe *graphe){
 	
 	// Insertion d'un nouveau sommet
 	//printf("Numero du sommet ??\n");
-	//int num;
-	//scanf("%d",&num);
+	
 	
 	//if(num > graphe->nbMaxSommets){
 	//	printf("Erreur");
@@ -125,6 +124,54 @@ void insertionSommet(struct TypGraphe *graphe){
 	
 }
 
+void suppressionSommet(struct TypGraphe *graphe){
+	//printf("Numero de sommet à supprimer : \n");
+	//int num;
+	//scanf("%d",&num);
+	
+	//if(num>0 && num<graphe->nbMaxSommets){
+		
+		//graphe->listesAdjacences[num-1];
+		
+		
+		
+	//}
+	//else{
+	//	printf("Erreur \n");
+	//}
+	
+	
+	struct TypVoisins *listes;
+	listes = graphe->listesAdjacences;
+	
+	int i=0;
+	while(listes->voisin != NULL){	
+		listes++;
+		i++;
+	}
+	
+	// Suppression du noeud
+	//graphe->listesAdjacences[i]= malloc(sizeof(struct TypVoisins));;
+	
+
+	
+	
+	
+}
+
+void insertionArete(struct TypGraphe *graphe){
+	printf("Numero de l'extremiter gauche : \n");
+	int gauche;
+	int droite;
+	scanf("%d",&gauche);
+	printf("Numero de l'extremiter droite : \n");
+	scanf("%d",&droite);
+	
+	
+}
+
+
+
 void afficheGraphe(struct TypGraphe *graphe){
 	printf("\n");
 	printf("\n");
@@ -141,42 +188,33 @@ void afficheGraphe(struct TypGraphe *graphe){
 	}
 	
 	printf("# sommets : voisins\n");
-	int i;
+	int i;	
+	struct TypVoisins* listes;
+	listes = graphe->listesAdjacences;
 	
-	//printf("%d\n",&graphe->listesAdjacences->voisin);
 	
-	while(graphe->listesAdjacences->voisin != NULL){
+	listes++;
+	while(listes->voisin != NULL){
 		
 		printf("%d : ",i+1);
-		// Parcous et affichage des voisin + le poid
-		// printf("tust");
 		
-		printf("%d\n",graphe->listesAdjacences->voisin);
+		printf("%d ",listes->voisin);
 		
-		if(graphe->listesAdjacences->voisin == -1){
+		if(listes->voisin == -1){
 			printf("()");
 		}
 		else{
 			printf("voisins");
+			
+			// TODO - Affichage des voisin
 		}
 		
 		
-		graphe->listesAdjacences++;
+		listes++;
 		
 		printf("\n");
 		i++;
 	}
-	
-	/*for(i=0; i<graphe->nbMaxSommets; i++){
-		printf("%d :",i+1);
-		
-		//TODO
-		if(graphe->listesAdjacences[i]->voisin != NULL){
-			printf("tust");
-		}
-		
-		printf("\n");
-	}*/
 	
 	printf("\n");
 	printf("\n");

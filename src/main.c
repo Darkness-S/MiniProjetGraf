@@ -37,6 +37,12 @@ int main(int argc, char **argv)
 			case 3:
 				insertionSommet(graphe);
 			break;
+			case 4:
+				insertionArete(graphe);
+			break;
+			case 5:
+				suppressionSommet(graphe);
+			break;
 			case 7:
 				afficheGraphe(graphe);
 			break;
