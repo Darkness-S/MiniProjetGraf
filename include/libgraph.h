@@ -14,90 +14,20 @@ struct TypGraphe{
    struct TypVoisins* listesAdjacences;
 };
 
-
-void creationGraphe(struct TypGraphe *graphe){
-	printf("-> Création d'un graphe\n");
-	
-	// Nombre de sommet 
-	printf("Nombre de sommet max??\n");
-	int nb;
-	scanf("%d",&nb);
-	
-	graphe->nbMaxSommets = nb;
-	graphe->listesAdjacences = malloc (sizeof(struct TypVoisins*));
-	
-	int i=0;
-	
-	struct TypVoisins *tab = malloc(sizeof(struct TypVoisins));;
-	while (i<nb){
-		struct TypVoisins *tmpVoisin = malloc(sizeof(struct TypVoisins));
-		tab =  tmpVoisin;
-		tab++;
-		i++;
-	}
-	graphe->listesAdjacences = tab;
-	
-	// Non-orienté
-	graphe->estOriente = 1;
-	
-}
 void insertionSommet(struct TypGraphe *graphe){
 	
 	// Insertion d'un nouveau sommet
-	//printf("Numero du sommet ??\n");
+	//struct TypVoisins *voisin = malloc(sizeof(struct TypVoisins));
 	
-	
-	//if(num > graphe->nbMaxSommets){
-	//	printf("Erreur");
-	//}
-	//else{
-		// Création du sommet : Ajout du voisin fictif "-1"
-		
-		//struct TypVoisins *VoisinTemp=malloc(sizeof(struct TypVoisins));
-		//VoisinTemp->voisin = -1;
-		/*while(graphe->listesAdjacences->voisin != NULL){
-		
-			graphe->listesAdjacences++;
-			
-		}*/
-		int i=0;
-		for(i=0; i<graphe->nbMaxSommets;i++){
-			if(graphe->listesAdjacences[i].voisin == 0 ){
-				graphe->listesAdjacences[i].voisin = -1;
-				break;
-			}
+	int i=0;
+	for(i=0; i<graphe->nbMaxSommets;i++){
+		if(graphe->listesAdjacences[i].voisin == 0 ){
+			graphe->listesAdjacences[i].voisin = -1;
+			break;
 		}
+	}
 		
-		//graphe->listesAdjacences->voisin = -1;
-		printf("%d\n",graphe->listesAdjacences->voisin);
-		//g
-		
-		
-		//while( graphe->listesAdjacences->voisin != NULL){
-			
-			//graphe->listesAdjacences++;
-		//}
-		
-		
-		
-		
-		//graphe->listesAdjacences++;
-		
-			
-		//struct TypVoisins *tmp = malloc(sizeof(struct TypVoisins));
-		//tmp->voisin = -1;
-		
-		
-		//graphe->listesAdjacences[num-1]->voisin = -1;
-			
-		
-		//graphe->listesAdjacences++;
-			
-		
-		// FinSi
-	//}
-	
-	
+	//printf("%d\n",graphe->listesAdjacences->voisin);
 	
 	// TEST :
 	
@@ -123,39 +53,148 @@ void insertionSommet(struct TypGraphe *graphe){
 	//printf("%d\n",graphe->listesAdjacences[2]->voisinSuivant->poid);
 	
 }
+	
+void create(struct TypGraphe *graphe, int nb){
+	
+	graphe->nbMaxSommets = nb+1;
+	graphe->listesAdjacences = malloc (sizeof(struct TypVoisins*));
+	
+	int i=0;
+	
+	struct TypVoisins *tab = malloc(sizeof(struct TypVoisins));;
+	while (i<nb+2){
+		struct TypVoisins *tmpVoisin = malloc(graphe->nbMaxSommets*2*sizeof(struct TypVoisins));
+		tab =  tmpVoisin;
+		tab++;
+		i++;
+	}
+	graphe->listesAdjacences = tab;
+	
+	// Non-orienté
+	graphe->estOriente = 1;
+	insertionSommet(graphe);
+	
+}
+
+void creationGraphe(struct TypGraphe *graphe){
+	printf("-> Création d'un graphe\n");
+	
+	// Nombre de sommet 
+	printf("Nombre de sommet max??\n");
+	int nb;
+	scanf("%d",&nb);
+	create(graphe,nb);
+}
+
 
 void suppressionSommet(struct TypGraphe *graphe){
-	//printf("Numero de sommet à supprimer : \n");
-	//int num;
-	//scanf("%d",&num);
-	
-	//if(num>0 && num<graphe->nbMaxSommets){
-		
-		//graphe->listesAdjacences[num-1];
-		
-		
-		
-	//}
-	//else{
-	//	printf("Erreur \n");
-	//}
-	
 	
 	struct TypVoisins *listes;
 	listes = graphe->listesAdjacences;
 	
+	struct TypVoisins *tmp= malloc(sizeof(struct TypVoisins));
+	
+	
 	int i=0;
 	while(listes->voisin != NULL){	
+		tmp = listes;
+		
+		tmp++;
 		listes++;
 		i++;
 	}
 	
-	// Suppression du noeud
-	//graphe->listesAdjacences[i]= malloc(sizeof(struct TypVoisins));;
+	int j=0;
+	while(j<i-1){
+		tmp[j]  = graphe->listesAdjacences[j];
+		j++;
+		
+	}
 	
+	
+	graphe->listesAdjacences = tmp;
+	
+}
 
+int voisinExiste(struct TypGraphe *graphe, int sommet, int voisin){
+	struct TypVoisins *listes;
+	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));
+	listes = graphe->listesAdjacences;
+	listes++;
+	int i=1;
+	int done = 0;
+	int res = 1;
+	while(listes->voisin != NULL && done == 0 ){
+				
+		if(i == sommet){
+			if(listes->voisin == voisin){
+				res=0;
+			}
+			
+			vtmp = listes;
+			while(vtmp->voisin != -1 && done == 0){
+				vtmp = vtmp->voisinSuivant;
+				if(vtmp->voisin == voisin){
+					res = 0;
+				}
+			}
+		}
+		i++;
+		listes++;
+	}
+	return res;
+}
+
+void ajouterArete(struct TypGraphe *graphe, int gauche, int droite, int poid){	
+	struct TypVoisins *listes;
+	listes = graphe->listesAdjacences;
+
+	struct TypVoisins *voisinTmp = malloc(sizeof(struct TypVoisins));
+	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));
 	
-	
+	if(listes[gauche].voisin != 0){
+		if(listes[gauche].voisin == -1){
+			voisinTmp->voisin = -1;
+			listes[gauche].poid = poid;
+			listes[gauche].voisin = droite;
+			listes[gauche].voisinSuivant = voisinTmp;
+		}
+		else{
+			listes++;
+			int i=1;
+			int done = 0;
+			
+			//Verifi existance
+			if( voisinExiste(graphe, gauche, droite) == 0){
+				done = 1;
+				printf("Erreur : L'arete existe deja! \n");
+			}
+			
+			while(listes->voisin != NULL && done == 0 ){
+				
+				if(i == gauche){
+					vtmp = listes;
+					while(vtmp->voisin != -1 && done == 0){
+							vtmp = vtmp->voisinSuivant;
+							if(vtmp->voisin == -1){
+								vtmp->voisin = droite;
+								vtmp->poid = poid;
+								voisinTmp->voisin = -1;
+								vtmp->voisinSuivant = voisinTmp;
+								done = 1;
+								
+							}
+					}
+				}
+				i++;
+				listes++;
+			}
+			
+		}
+	}
+	else{
+		printf("Erreur");
+	}
 	
 }
 
@@ -163,14 +202,66 @@ void insertionArete(struct TypGraphe *graphe){
 	printf("Numero de l'extremiter gauche : \n");
 	int gauche;
 	int droite;
+	int poid;
+	char sym;
 	scanf("%d",&gauche);
 	printf("Numero de l'extremiter droite : \n");
 	scanf("%d",&droite);
+	printf("poid de l'arete : \n");
+	scanf("%d",&poid);
+	printf("L'arete est-elle symétrique ? (o/n) : \n");
+	scanf("%c",&sym);
+	scanf("%c",&sym);
 	
+	if(sym == 'o'){
+		ajouterArete(graphe,droite,gauche,poid);
+	}
+	ajouterArete(graphe,gauche,droite,poid);
+}
+
+
+int supprArete(struct TypGraphe *graphe, int sommet, int voisin){
+	struct TypVoisins *listes;
+	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));
+	
+	struct TypGraphe *g = malloc(sizeof (struct TypGraphe));
+	create(g,graphe->nbMaxSommets-1);
+	
+	listes = graphe->listesAdjacences;
+	listes++;
+	int i=1;
+	int res = 1;
+	while(listes->voisin != NULL){
+		insertionSommet(g);	
+		if(listes->voisin != voisin || i!=sommet){
+			ajouterArete(g,i,listes->voisin,listes->poid);				
+		}
+			
+			vtmp = listes;
+			while(vtmp->voisin != -1){
+				vtmp = vtmp->voisinSuivant;
+				if(vtmp->voisin != voisin || i!=sommet){
+					ajouterArete(g,i,vtmp->voisin,vtmp->poid);
+				}
+			}
+		i++;
+		listes++;
+	}
+	return g;
 	
 }
 
 
+int suppressionArete(struct TypGraphe *graphe){
+	
+	printf("Numero de l'extremiter gauche : \n");
+	int sommet;
+	int voisin;
+	scanf("%d",&sommet);
+	printf("Numero de l'extremiter droite : \n");
+	scanf("%d",&voisin);
+	return supprArete(graphe,sommet,voisin);
+}
 
 void afficheGraphe(struct TypGraphe *graphe){
 	printf("\n");
@@ -188,7 +279,7 @@ void afficheGraphe(struct TypGraphe *graphe){
 	}
 	
 	printf("# sommets : voisins\n");
-	int i;	
+	int i=0;	
 	struct TypVoisins* listes;
 	listes = graphe->listesAdjacences;
 	
@@ -198,13 +289,26 @@ void afficheGraphe(struct TypGraphe *graphe){
 		
 		printf("%d : ",i+1);
 		
-		printf("%d ",listes->voisin);
+		//printf("%d ",listes->voisin);
 		
 		if(listes->voisin == -1){
-			printf("()");
+			printf("(%d)",listes->voisin);
 		}
 		else{
-			printf("voisins");
+			printf("(%d/%d)",listes->voisin, listes->poid);
+			
+			struct TypVoisins *tmp ;//= malloc(sizeof(struct TypVoisins));
+			tmp = listes->voisinSuivant;
+			if(tmp != NULL){
+				while(tmp->voisin != -1){
+					
+					printf(", (%d/%d)",tmp->voisin,tmp->poid);
+					
+					tmp = tmp->voisinSuivant;
+				}
+				
+				
+			}
 			
 			// TODO - Affichage des voisin
 		}

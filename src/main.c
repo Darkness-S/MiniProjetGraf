@@ -43,6 +43,9 @@ int main(int argc, char **argv)
 			case 5:
 				suppressionSommet(graphe);
 			break;
+			case 6:
+				graphe = suppressionArete(graphe);
+			break;
 			case 7:
 				afficheGraphe(graphe);
 			break;
