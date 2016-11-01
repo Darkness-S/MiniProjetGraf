@@ -49,6 +49,9 @@ int main(int argc, char **argv)
 			case 7:
 				afficheGraphe(graphe);
 			break;
+			case 8:
+				enregistrerGraph(graphe);
+				break;
 			case 9:
 				free(graphe);
 				quit = 1;

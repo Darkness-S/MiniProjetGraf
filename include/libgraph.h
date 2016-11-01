@@ -327,4 +327,65 @@ void afficheGraphe(struct TypGraphe *graphe){
 	
 }
 
+int enregistrerGraph(struct TypGraphe *graphe) {
+	FILE* save = NULL;
+	char saveName[50];
+	printf("Nom du fichier de sauvegarde : \n");
+	scanf("%s", &saveName);
+	printf("poid de l'arete : \n");
+	save = fopen(saveName, "w+");
+	if (save != NULL) {
+		fprintf(save, "# Nombre maximum de sommets\n%d\n# oriente\n", graphe->nbMaxSommets - 1);
+		printf("# Nombre maximum de sommets\n%d\n# oriente\n", graphe->nbMaxSommets - 1);
+		if (graphe->estOriente == 0) {
+			fprintf(save, "o\n# sommets : voisins\n");
+			printf("o\n# sommets : voisins\n");
+		}
+		else {
+			fprintf(save, "n\n# sommets : voisins\n");
+			printf("n\n# sommets : voisins\n");
+		}
+		int i=0;
+		struct TypVoisins* listes;
+		listes = graphe->listesAdjacences;
+		listes++;
+		while (listes->voisin != NULL) {
+			fprintf(save, "%d : ", i + 1);
+			printf("%d : ", i + 1);
+			if (listes->voisin == -1) {
+				fprintf(save, "(%d)", listes->voisin);
+				printf("(%d)", listes->voisin);
+			}
+			else {
+				fprintf(save, "(%d/%d)", listes->voisin, listes->poid);
+				printf("(%d/%d)", listes->voisin, listes->poid);
+
+				struct TypVoisins *tmp;//= malloc(sizeof(struct TypVoisins));
+				tmp = listes->voisinSuivant;
+				if (tmp != NULL) {
+					while (tmp->voisin != -1) {
+						fprintf(save,", (%d/%d)", tmp->voisin, tmp->poid);
+						printf(", (%d/%d)", tmp->voisin, tmp->poid);
+						tmp = tmp->voisinSuivant;
+					}
+				}
+				// TODO - Affichage des voisin
+			}
+			listes++;
+			fprintf(save, "\n");
+			printf("\n");
+			i++;
+		}
+		fclose(save);
+	}
+	else {
+		printf("Erreur de création du fichier");
+		return 1;
+	}
+	return 0;
+}
+
+void lecttureGraph(struct TypGraphe *graphe) {
+
+}
 
