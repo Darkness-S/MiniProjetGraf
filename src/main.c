@@ -14,10 +14,25 @@
 #include "../include/libgraph.h"
 #include "../include/liblist.h"
 
-int main(int argc, char **argv)
-{
+void afficheMenu(){
 	
-	struct TypGraphe *graphe = malloc(sizeof (struct TypGraphe));
+	printf("--------------------------------------------\n");
+	printf("--                  MENU                  --\n");
+	printf("--------------------------------------------\n");
+	printf("1- Création\n");
+	printf("2- Lecture\n");
+	printf("3- Insertion de sommet\n");
+	printf("4- Insertion d'arrete\n");
+	printf("5- Suppression d'un sommet\n");
+	printf("6- Suppression d'une arrète\n");
+	printf("7- Affichage\n");
+	printf("8- Sauvegarde\n");
+	printf("9- Quitter\n");
+	printf("--------------------------------------------\n");
+	
+}
+
+void choix(struct TypGraphe *graphe){
 	
 	int quit = 0;
 	while(quit ==0){
@@ -60,26 +75,19 @@ int main(int argc, char **argv)
 	
 	}
 	
+}
+
+int main(int argc, char **argv)
+{
+	
+	struct TypGraphe *graphe = malloc(sizeof (struct TypGraphe));
+	choix(graphe);
+	
+	
 	return 0;
 }
 
-void afficheMenu(){
-	
-	printf("--------------------------------------------\n");
-	printf("--                  MENU                  --\n");
-	printf("--------------------------------------------\n");
-	printf("1- Création\n");
-	printf("2- Lecture\n");
-	printf("3- Insertion de sommet\n");
-	printf("4- Insertion d'arrete\n");
-	printf("5- Suppression d'un sommet\n");
-	printf("6- Suppression d'une arrète\n");
-	printf("7- Affichage\n");
-	printf("8- Sauvegarde\n");
-	printf("9- Quitter\n");
-	printf("--------------------------------------------\n");
-	
-}
+
 
 
 

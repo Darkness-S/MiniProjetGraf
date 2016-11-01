@@ -54,7 +54,7 @@ void insertionSommet(struct TypGraphe *graphe){
 	
 }
 	
-void create(struct TypGraphe *graphe, int nb){
+void create(struct TypGraphe *graphe, int nb, char oriente){
 	
 	graphe->nbMaxSommets = nb+1;
 	graphe->listesAdjacences = malloc (sizeof(struct TypVoisins*));
@@ -71,7 +71,12 @@ void create(struct TypGraphe *graphe, int nb){
 	graphe->listesAdjacences = tab;
 	
 	// Non-orienté
-	graphe->estOriente = 1;
+	if(oriente == 'o'){
+		graphe->estOriente = 0;
+	}
+	else{
+		graphe->estOriente = 1;
+	}
 	insertionSommet(graphe);
 	
 }
@@ -80,10 +85,14 @@ void creationGraphe(struct TypGraphe *graphe){
 	printf("-> Création d'un graphe\n");
 	
 	// Nombre de sommet 
-	printf("Nombre de sommet max??\n");
+	printf("Nombre de sommet max?\n");
 	int nb;
+	char oriente= 'n';
 	scanf("%d",&nb);
-	create(graphe,nb);
+	printf("Le graphe est-il orienté? (o/n)\n");
+	scanf("%c",&oriente);
+	scanf("%c",&oriente);
+	create(graphe,nb,oriente);
 }
 
 
@@ -138,6 +147,24 @@ int voisinExiste(struct TypGraphe *graphe, int sommet, int voisin){
 					res = 0;
 				}
 			}
+		}
+		i++;
+		listes++;
+	}
+	return res;
+}
+
+int sommetExiste(struct TypGraphe *graphe, int sommet){
+	struct TypVoisins *listes;
+	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));
+	listes = graphe->listesAdjacences;
+	listes++;
+	int i=1;
+	int res = 1;
+	while(listes->voisin != NULL){
+				
+		if(i == sommet){
+			res = 0;
 		}
 		i++;
 		listes++;
@@ -203,20 +230,40 @@ void insertionArete(struct TypGraphe *graphe){
 	int gauche;
 	int droite;
 	int poid;
-	char sym;
+	char sym = 'n';
 	scanf("%d",&gauche);
-	printf("Numero de l'extremiter droite : \n");
-	scanf("%d",&droite);
-	printf("poid de l'arete : \n");
-	scanf("%d",&poid);
-	printf("L'arete est-elle symétrique ? (o/n) : \n");
-	scanf("%c",&sym);
-	scanf("%c",&sym);
 	
-	if(sym == 'o'){
-		ajouterArete(graphe,droite,gauche,poid);
+	if( sommetExiste(graphe,gauche) == 0){
+	
+		printf("Numero de l'extremiter droite : \n");
+		scanf("%d",&droite);
+		
+		if(sommetExiste(graphe,droite) == 0){
+		
+			printf("poid de l'arete : \n");
+			scanf("%d",&poid);
+			if(graphe->estOriente == 0){
+				printf("L'arete est-elle symétrique ? (o/n) : \n");
+				scanf("%c",&sym);
+				scanf("%c",&sym);
+			
+				if(sym == 'o'){
+					ajouterArete(graphe,droite,gauche,poid);
+				}
+				ajouterArete(graphe,gauche,droite,poid);
+			}
+			else{
+				ajouterArete(graphe,droite,gauche,poid);
+				ajouterArete(graphe,gauche,droite,poid);
+			}
+		}
+		else{
+			printf("Erreur");
+		}
 	}
-	ajouterArete(graphe,gauche,droite,poid);
+	else{
+		printf("Erreur");
+	}
 }
 
 
@@ -225,12 +272,11 @@ int supprArete(struct TypGraphe *graphe, int sommet, int voisin){
 	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));
 	
 	struct TypGraphe *g = malloc(sizeof (struct TypGraphe));
-	create(g,graphe->nbMaxSommets-1);
+	create(g,graphe->nbMaxSommets-1,graphe->estOriente);
 	
 	listes = graphe->listesAdjacences;
 	listes++;
 	int i=1;
-	int res = 1;
 	while(listes->voisin != NULL){
 		insertionSommet(g);	
 		if(listes->voisin != voisin || i!=sommet){
@@ -269,7 +315,7 @@ void afficheGraphe(struct TypGraphe *graphe){
 	printf("\n");
 	printf("\n");
 	printf("# nombre maximum de sommets\n");
-	printf("%d\n",graphe->nbMaxSommets);
+	printf("%d\n",graphe->nbMaxSommets-1);
 	printf("# oriente\n");
 	if(graphe->estOriente == 0){
 		printf("o\n");
