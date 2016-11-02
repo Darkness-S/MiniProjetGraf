@@ -141,7 +141,6 @@ void ajouterArete(struct TypGraphe *graphe, int gauche, int droite, int poid){
 			//Verifi existance
 			if( voisinExiste(graphe, gauche, droite) == 0){
 				done = 1;
-				printf("Erreur : L'arete existe deja! \n");
 			}			
 			while(listes->voisin != NULL && done == 0 ){				
 				if(i == gauche){
@@ -260,7 +259,7 @@ void afficheGraphe(struct TypGraphe *graphe){
 	while(listes->voisin != NULL){	
 		printf("%d : ",i+1);		
 		if(listes->voisin == -1){
-			printf("(%d)",listes->voisin);
+	//		printf("(%d)",listes->voisin);
 		}else{
 			printf("(%d/%d)",listes->voisin, listes->poid);	
 			struct TypVoisins *tmp ;
@@ -276,10 +275,10 @@ void afficheGraphe(struct TypGraphe *graphe){
 		printf("\n");
 		i++;
 	}	
+/*	printf("\n");
 	printf("\n");
 	printf("\n");
-	printf("\n");
-	printf("\n");	
+	printf("\n");	*/
 }
 
 int enregistrerGraphe(struct TypGraphe *graphe) {
@@ -309,7 +308,7 @@ int enregistrerGraphe(struct TypGraphe *graphe) {
 			printf("%d : ", i + 1);
 			if (listes->voisin == -1) {
 				//fprintf(save, "(%d)", listes->voisin);
-				printf("(%d)", listes->voisin);
+				//printf("(%d)", listes->voisin);
 			} else {
 				fprintf(save, "(%d/%d)", listes->voisin, listes->poid);
 				printf("(%d/%d)", listes->voisin, listes->poid);
@@ -418,7 +417,7 @@ int lectureGraphe(struct TypGraphe *graphe) {
 		}
 		i++;
 	}
-	printf("%s\n%d\n", buffer, x);
+	printf("%s\n", buffer);
 	fclose(load);
 	return 0;
 }
