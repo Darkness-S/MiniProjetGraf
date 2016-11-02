@@ -47,7 +47,7 @@ void choix(struct TypGraphe *graphe){
 				creationGraphe(graphe);
 			break;
 			case 2:
-				printf("%d\n",graphe->nbMaxSommets);
+				lectureGraphe(graphe);
 			break;
 			case 3:
 				insertionSommet(graphe);
@@ -65,7 +65,7 @@ void choix(struct TypGraphe *graphe){
 				afficheGraphe(graphe);
 			break;
 			case 8:
-				enregistrerGraph(graphe);
+				enregistrerGraphe(graphe);
 				break;
 			case 9:
 				free(graphe);

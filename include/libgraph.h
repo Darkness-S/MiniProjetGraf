@@ -1,5 +1,5 @@
-
 #include <stdio.h>
+#define BUFFERSIZE 1024
 
 struct TypVoisins{
 	int voisin;
@@ -373,12 +373,11 @@ void afficheGraphe(struct TypGraphe *graphe){
 	
 }
 
-int enregistrerGraph(struct TypGraphe *graphe) {
+int enregistrerGraphe(struct TypGraphe *graphe) {
 	FILE* save = NULL;
 	char saveName[50];
-	printf("Nom du fichier de sauvegarde : \n");
+	printf("Nom ou chemin du fichier de sauvegarde : \n");
 	scanf("%s", &saveName);
-	printf("poid de l'arete : \n");
 	save = fopen(saveName, "w+");
 	if (save != NULL) {
 		fprintf(save, "# Nombre maximum de sommets\n%d\n# oriente\n", graphe->nbMaxSommets - 1);
@@ -399,14 +398,14 @@ int enregistrerGraph(struct TypGraphe *graphe) {
 			fprintf(save, "%d : ", i + 1);
 			printf("%d : ", i + 1);
 			if (listes->voisin == -1) {
-				fprintf(save, "(%d)", listes->voisin);
+				//fprintf(save, "(%d)", listes->voisin);
 				printf("(%d)", listes->voisin);
 			}
 			else {
 				fprintf(save, "(%d/%d)", listes->voisin, listes->poid);
 				printf("(%d/%d)", listes->voisin, listes->poid);
 
-				struct TypVoisins *tmp;//= malloc(sizeof(struct TypVoisins));
+				struct TypVoisins *tmp;
 				tmp = listes->voisinSuivant;
 				if (tmp != NULL) {
 					while (tmp->voisin != -1) {
@@ -415,23 +414,114 @@ int enregistrerGraph(struct TypGraphe *graphe) {
 						tmp = tmp->voisinSuivant;
 					}
 				}
-				// TODO - Affichage des voisin
 			}
 			listes++;
-			fprintf(save, "\n");
-			printf("\n");
+			if (listes->voisin != NULL){
+				fprintf(save, "\n");
+				printf("\n");
+			}
+
 			i++;
 		}
 		fclose(save);
 	}
 	else {
-		printf("Erreur de création du fichier");
+		printf("Erreur de création du fichier\n");
 		return 1;
 	}
 	return 0;
 }
 
-void lecttureGraph(struct TypGraphe *graphe) {
-
+int lectureGraphe(struct TypGraphe *graphe) {
+	FILE* load = NULL;
+	char loadName[50];
+	char buffer[BUFFERSIZE + 1];
+	printf("Nom ou chemin du fichier de chargement : \n");
+	scanf("%s", &loadName);
+	load = fopen(loadName, "r");
+	if (load != NULL) {
+		size_t newLen = fread(buffer, sizeof(char), BUFFERSIZE, load);
+		if (ferror(load) != 0) {
+			fputs("Erreur lecture fichier", stderr);
+		}
+		else {
+			buffer[newLen++] = '\0';
+		}
+	}
+	else {
+		printf("Erreur ouverture");
+		return 1;
+	}
+	int i = 0, x = 1, y = 0, z = 0, nbSomMax = 0, somArrD = 0, poids=0;
+	char orient;
+	char tmpSom[10]="";
+	char tmpSomArrD[10] = "";
+	char tmpPoids[10] = "";
+	while (buffer[i] != NULL) {
+		if (buffer[i] == '\n') {
+			x++;
+			if (x > 5) {
+				insertionSommet(graphe);
+			}
+		}
+		if ((x == 2) && (y==0)) {
+			tmpSom[z] = buffer[i];
+			y = i;
+			while ((buffer[y + 1] >= '0') && (buffer[y + 1] <= '9')) {
+				tmpSom[z + 1] = buffer[y + 1];
+				z++;
+				y++;
+			}
+		//	printf("%s sommes max \n", tmpSom);
+			nbSomMax = atoi(tmpSom);
+		}
+		if (x == 4) {
+			orient = buffer[i];
+			create(graphe, nbSomMax, orient);
+		}
+		if ((x >= 6) && (x <= (6 + nbSomMax))) {
+			//printf("Entrée if 1 %c\n", buffer[i]);
+			if (buffer[i] == '(') {
+		//		printf("Entrée if 1 %c\n", buffer[i]);
+				y = i;
+				z = 0; 
+				//tmpSomArrD[z] = buffer[i+1];
+				while ((buffer[y + 1] >= '0') && (buffer[y + 1] <= '9')) {
+					tmpSomArrD[z] = buffer[y + 1];
+					z++;
+					y++;
+				}
+				somArrD = atoi(tmpSomArrD);
+			//	("%d %s\n\n", somArrD, tmpSomArrD);
+			}
+			if (buffer[i] == '/') {
+		//		printf("Entrée if 2 %c\n", buffer[i]);
+				y = i;
+				z = 0; 
+				while ((buffer[y + 1] >= '0') && (buffer[y + 1] <= '9')) {
+					tmpPoids[z] = buffer[y + 1];
+					z++;
+					y++;
+				}
+				poids = atoi(tmpPoids);
+			//	("P : %d %s\n\n", poids, tmpPoids);
+			}
+			if (buffer[i] == ')') {
+		//		printf("Entrée if 3 %c\n", buffer[i]);
+				z = 0;
+				for (z = 0; z < 10; z++) {
+					tmpPoids[z] = "";
+					tmpSomArrD[z] = "";
+				}
+	//			printf("Gauche : %d, Droite : %d, Poids : %d\n", x-5, somArrD, poids);
+				z = 0;
+				ajouterArete(graphe, x-5, somArrD, poids);
+			}
+		}
+		i++;
+	}
+//	printf("%d sommet %c orient\n", nbSomMax, orient);
+	printf("%s\n%d\n", buffer, x);
+	fclose(load);
+	return 0;
 }
-
