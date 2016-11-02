@@ -378,7 +378,9 @@ int enregistrerGraphe(struct TypGraphe *graphe) {
 	char saveName[50];
 	printf("Nom ou chemin du fichier de sauvegarde : \n");
 	scanf("%s", &saveName);
+	//Créer fichier de sauvegarde
 	save = fopen(saveName, "w+");
+	//Sauvegarde dans le fichier
 	if (save != NULL) {
 		fprintf(save, "# Nombre maximum de sommets\n%d\n# oriente\n", graphe->nbMaxSommets - 1);
 		printf("# Nombre maximum de sommets\n%d\n# oriente\n", graphe->nbMaxSommets - 1);
@@ -434,11 +436,13 @@ int enregistrerGraphe(struct TypGraphe *graphe) {
 
 int lectureGraphe(struct TypGraphe *graphe) {
 	FILE* load = NULL;
+	//Ouvre fichier
 	char loadName[50];
 	char buffer[BUFFERSIZE + 1];
 	printf("Nom ou chemin du fichier de chargement : \n");
 	scanf("%s", &loadName);
 	load = fopen(loadName, "r");
+	//Enregistre fichier dans le buffer
 	if (load != NULL) {
 		size_t newLen = fread(buffer, sizeof(char), BUFFERSIZE, load);
 		if (ferror(load) != 0) {
@@ -457,6 +461,7 @@ int lectureGraphe(struct TypGraphe *graphe) {
 	char tmpSom[10]="";
 	char tmpSomArrD[10] = "";
 	char tmpPoids[10] = "";
+	//Créer le graphe par rapport aux caractères rencontrés
 	while (buffer[i] != NULL) {
 		if (buffer[i] == '\n') {
 			x++;
