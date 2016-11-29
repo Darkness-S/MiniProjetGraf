@@ -101,7 +101,13 @@ int main(int argc, char **argv)
 	//afficheCoordonee(x, y, n);
 	creationArrete(graphe, n, x, y);
 	afficheGraphe(graphe);
-
+	heap_t *h = (heap_t *)calloc(1, sizeof (heap_t));
+	pushBestVoisin(h, graphe);
+	printf("\n");
+	for (int i=0; i<h->size; i++){
+		printf("%d - ",pop(h));
+	}
+	printf("\n");
 	return 0;
 }
 

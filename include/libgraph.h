@@ -15,16 +15,16 @@ struct TypGraphe{
    struct TypVoisins* listesAdjacences;
 };
 
-struct node_t{
+typedef struct{
     int priority;
-    char *data;
-};
+    int sommet;
+}node_t;
  
-struct heap_t{
+typedef struct{
     node_t *nodes;
     int len;
     int size;
-};
+} heap_t;
 
 void insertionSommet(struct TypGraphe *graphe){	
 	int i=0;
@@ -500,7 +500,7 @@ void creationArrete(struct TypGraphe *graphe, int n, int x[], int y[]) {
 	}
 }
 	
-void push (heap_t *h, int priority, char *data) {
+void push (heap_t *h, int priority, int sommet) {
     if (h->len + 1 >= h->size) {
         h->size = h->size ? h->size * 2 : 4;
         h->nodes = (node_t *)realloc(h->nodes, h->size * sizeof (node_t));
@@ -513,16 +513,16 @@ void push (heap_t *h, int priority, char *data) {
         j = j / 2;
     }
     h->nodes[i].priority = priority;
-    h->nodes[i].data = data;
+    h->nodes[i].sommet = sommet;
     h->len++;
 }
  
-char *pop (heap_t *h) {
+int pop (heap_t *h) {
     int i, j, k;
     if (!h->len) {
         return NULL;
     }
-    char *data = h->nodes[1].data;
+    int sommet = h->nodes[1].sommet;
     h->nodes[1] = h->nodes[h->len];
     h->len--;
     i = 1;
@@ -542,8 +542,20 @@ char *pop (heap_t *h) {
         i = k;
     }
     h->nodes[i] = h->nodes[h->len + 1];
-    return data;
+    return sommet;
 }	
 
-	
+void pushBestVoisin(heap_t *h, struct TypGraphe *graphe){
+	struct TypVoisins* listes;
+	listes = graphe->listesAdjacences;	
+	listes++;
+	struct TypVoisins *tmp ;
+	tmp = listes->voisinSuivant;
+	if(tmp != NULL){
+		while(tmp->voisin != -1){		
+			push(h, tmp->poid, tmp->voisin);							
+			tmp = tmp->voisinSuivant;
+		}
+	}
+}
 
