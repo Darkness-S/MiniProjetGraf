@@ -35,7 +35,7 @@ void afficheMenu(){
 void choix(struct TypGraphe *graphe){
 	
 	int quit = 0;
-	while(quit ==0){
+	while(quit == 0){
 		
 		afficheMenu();
 		
@@ -79,11 +79,29 @@ void choix(struct TypGraphe *graphe){
 
 int main(int argc, char **argv)
 {
+	if (argc != 3) {
+		printf("Erreur nombre d'argument : N , g \n");
+		return 1;
+	}
+
+	struct TypGraphe *graphe = malloc(sizeof(struct TypGraphe));
+	//choix(graphe);
 	
-	struct TypGraphe *graphe = malloc(sizeof (struct TypGraphe));
-	choix(graphe);
+	int n = atoi(argv[1]);
+	create(graphe,n,'n');
 	
+	int graine = atoi(argv[2]);
 	
+	srand(graine);
+
+	int x[n];
+	int y[n];
+	
+	sommetAleatoire(graphe,n,graine,x,y);
+	//afficheCoordonee(x, y, n);
+	creationArrete(graphe, n, x, y);
+	afficheGraphe(graphe);
+
 	return 0;
 }
 

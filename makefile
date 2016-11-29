@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-g -W -Wall
+CFLAGS=-g -W -Wall -lm
 
 OBJDIR=obj
 BINDIR=bin

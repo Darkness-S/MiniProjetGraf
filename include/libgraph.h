@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #define BUFFERSIZE 1024
 
 struct TypVoisins{
@@ -42,7 +43,7 @@ void create(struct TypGraphe *graphe, int nb, char oriente){
 	}else{
 		graphe->estOriente = 1;
 	}
-	insertionSommet(graphe);	
+	insertionSommet(graphe);
 }
 
 void creationGraphe(struct TypGraphe *graphe){
@@ -57,7 +58,6 @@ void creationGraphe(struct TypGraphe *graphe){
 	scanf("%c",&oriente);
 	create(graphe,nb,oriente);
 }
-
 
 void suppressionSommet(struct TypGraphe *graphe){	
 	struct TypVoisins *listes;
@@ -161,8 +161,9 @@ void ajouterArete(struct TypGraphe *graphe, int gauche, int droite, int poid){
 			}
 			
 		}
-	}else{
-		printf("Erreur");
+	}
+	else{
+		printf("Erreur : : %d\n",gauche);
 	}
 	
 }
@@ -193,13 +194,12 @@ void insertionArete(struct TypGraphe *graphe){
 				ajouterArete(graphe,gauche,droite,poid);
 			}
 		}else{
-			printf("Erreur");
+			printf("Erreur : : Sommet droite n'existe pas -> %d\n",droite);
 		}
 	}else{
-		printf("Erreur");
+		printf("Erreur : : Sommet gauche n'existe pas <- %d \n",gauche);
 	}
 }
-
 
 int supprArete(struct TypGraphe *graphe, int sommet, int voisin){
 	struct TypVoisins *listes;
@@ -226,7 +226,6 @@ int supprArete(struct TypGraphe *graphe, int sommet, int voisin){
 	}
 	return g;	
 }
-
 
 int suppressionArete(struct TypGraphe *graphe){
 	printf("Numero de l'extremiter gauche : \n");
@@ -420,4 +419,75 @@ int lectureGraphe(struct TypGraphe *graphe) {
 	printf("%s\n", buffer);
 	fclose(load);
 	return 0;
+}
+
+void sommetAleatoire(struct TypGraphe *graphe ,int n, int graine, int x[], int y[]) {
+	// creation de n sommet
+
+	// tirage aléatoire des coordonnées
+	int i = 0;
+
+	for (i = 0; i < n; i++) {
+
+		int coordX = i;
+		int coordY = i;
+		// ALEATOIRE
+
+		x[i] = rand()%100;//coordX;
+		y[i] = rand()%100;//coordX;
+
+		//insert le sommet dans le graphe
+
+		insertionSommet(graphe);
+
+	}
+
+}
+
+void afficheCoordonee(int x[], int y[],int n) {
+	int i;
+	for (i = 0; i < n; i++) {
+
+		printf("%d ; %d\n", x[i], y[i]);
+
+	}
+}
+
+void creationArrete(struct TypGraphe *graphe, int n, int x[], int y[]) {
+
+	// Chaque sommet a une arrete vers tous les sommets ( GRAPHE COMPLET )
+	/*
+	int i = 0;
+	int j = 0;
+
+	int gauche = i;
+	int droite = j;
+
+	int poid = 0;
+	// poid = calcul de la distance entre coordonné de gauche et de droite 
+
+
+	ajouterArete(graphe, gauche, droite, poid);
+	*/
+	int i = 0;
+	int j = 0;
+	//int gauche = 0,droite = 0, poid = 0;
+	
+	for (i = 1; i <= n; i++) {
+		for (j = 1; j <= n; j++) {
+			int gauche = i;
+			int droite = j;
+
+			double poid=0;
+			// poid = calcul de la distance entre coordonné de gauche et de droite 
+			poid = (double)sqrt(pow((x[i - 1] - x[j - 1]),2) + pow((y[i - 1] - y[j - 1]),2));
+			//poid = sqrt((int)i);
+			if (gauche != droite) {
+				ajouterArete(graphe, gauche, droite, (int)poid);
+			}
+		}
+	}
+	
+
+	
 }
