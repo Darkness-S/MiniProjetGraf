@@ -545,17 +545,25 @@ int pop (heap_t *h) {
     return sommet;
 }	
 
-void pushBestVoisin(heap_t *h, struct TypGraphe *graphe){
+void pushBestVoisin(heap_t *h, struct TypGraphe *graphe,int num){
 	struct TypVoisins* listes;
 	listes = graphe->listesAdjacences;	
 	listes++;
-	struct TypVoisins *tmp ;
-	tmp = listes->voisinSuivant;
-	if(tmp != NULL){
-		while(tmp->voisin != -1){		
-			push(h, tmp->poid, tmp->voisin);							
-			tmp = tmp->voisinSuivant;
+	int i=1;
+	while(listes->voisin != NULL){
+		if(i== num){
+			struct TypVoisins *tmp ;
+			push(h, listes->poid, listes->voisin);
+			tmp = listes->voisinSuivant;
+			if(tmp != NULL){
+				while(tmp->voisin != -1){		
+					push(h, tmp->poid, tmp->voisin);							
+					tmp = tmp->voisinSuivant;
+				}
+			}
 		}
+		i++;
+		listes++;
 	}
 }
 

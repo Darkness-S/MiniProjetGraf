@@ -1,5 +1,5 @@
-CC=gcc
-CFLAGS=-g -W -Wall -lm
+CC=gcc 
+CFLAGS=-g -W -Wall -lm -std=c99
 
 OBJDIR=obj
 BINDIR=bin
