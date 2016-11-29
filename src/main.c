@@ -91,7 +91,6 @@ int main(int argc, char **argv)
 	create(graphe,n,'n');
 	
 	int graine = atoi(argv[2]);
-	int sommetDepart = atoi(argv[3]);
 	srand(graine);
 
 	int x[n];
@@ -102,7 +101,7 @@ int main(int argc, char **argv)
 	creationArrete(graphe, n, x, y);
 	afficheGraphe(graphe);
 	heap_t *h = (heap_t *)calloc(1, sizeof (heap_t));
-	pushBestVoisin(h, graphe, sommetDepart);
+	pushBestVoisin(h, graphe, 1);
 	printf("\n");
 	for (int i=0; i<(graphe->nbMaxSommets)-3; i++){
 		printf("%d - ",pop(h));
