@@ -577,6 +577,29 @@ int taille(int *V){
 	return t-1;
 }
 
+
+/*void enregistrementSommet(int n, int k, int *L, int *t, int *tab) {
+	int i, j, j1, t2[n];
+	if (k == n) {
+		for (i = 0; i < n; i++) {
+			for (j = 0; j < n*factorielle(n) && tab[j] != n; j++) {
+			}
+			tab[j] = L[i];
+		}
+		return;
+	}
+	for (i = 0; i < n - k; i++) {
+		L[k] = t[i];
+		for (j = 0, j1 = 0; j < n - k, j++) {
+			if (j != i) {
+				t2[j1] = t[j];
+				j1++
+			}
+		}
+		enregistrementSommet(n, k + 1, L, t2, tab);
+	}
+}*/
+
 void change(int *V,int x, int ta) {
 
 	int *tmp = malloc((ta-1) * sizeof(int));
@@ -590,11 +613,11 @@ void change(int *V,int x, int ta) {
 		i++;
 		
 	}
-	/*t = 0;
-	while (tmp[t] != NULL) {
-		printf("%d\t",tmp[t]);
+	t = 0;
+	while (V[t] != NULL) {
+		printf("%d\t",V[t]);
 		t++;
-	}*/
+	}
 	
 
 	//V = malloc((ta-1) * sizeof(int));
@@ -603,7 +626,7 @@ void change(int *V,int x, int ta) {
 
 }
 
-void ajouteListeParcour(int **liste, int *prefixe, int tprefixe, int x, int cpt) {
+void ajouteListeParcour(int* liste, int *prefixe, int tprefixe, int x, int cpt) {
 	int j = 0;
 	int **ltmp = liste;
 	printf("\npatte : %d\n", cpt);
@@ -655,17 +678,18 @@ int enumereCycles(int **liste,int *prefixe,int tprefixe, int *V, int t,int cpt) 
 		//printf("done\n");
 		int ta = 0;
 		while (ta<tprefixe) {
-			printf("%d",prefixe[ta]);
-
+			printf("%d-",prefixe[ta]);
+			
 			ta++;
 		}
-		printf("\n");
+		
+		printf("%d\n", V[t]);
 		//ajouteListeParcour(liste, prefixe, tprefixe, V[t],cpt);
 	}
 	else {
 		
 		t = t - 1;
-		printf("%d\n", V[0]);
+		//printf("%d\n", V[0]);
 		int ta = 0;
 		while (ta<t) {
 			
@@ -675,6 +699,7 @@ int enumereCycles(int **liste,int *prefixe,int tprefixe, int *V, int t,int cpt) 
 			ta++;
 
 		}
+		//t = t - 1;
 		 
 
 
@@ -686,3 +711,166 @@ int enumereCycles(int **liste,int *prefixe,int tprefixe, int *V, int t,int cpt) 
 
 }
 
+unsigned long factorial(unsigned long f)
+{
+	if (f == 0)
+		return 1;
+	return(f * factorial(f - 1));
+}
+
+void arrangements(int n, int k, int *L, int *t, int* tab) {
+	int i;
+	int j;
+	int j1;
+	int t2[n]; //
+			   //si on est dans la dernière itération
+	if (k == n) {
+		//pour chaque numéro de sommet
+		for (i = 0; i<n; i++) {
+			//on cherche la première case du tableau qui n'est pas encore un sommet
+			for (j = 0; j<n*factorial(n) && tab[j] != n; j++) {
+			}
+			//et on y met le sommet courant i
+			tab[j] = L[i];
+		}
+		return;
+	}
+	//pour chaque numéro de sommet de l'itération courante
+	for (i = 0; i<n - k; i++) {
+		//on met
+		L[k] = t[i];
+		for (j = 0, j1 = 0; j<n - k; j++) {
+			if (j != i) {
+				t2[j1] = t[j];
+				j1++;
+			}
+		}
+		arrangements(n, k + 1, L, t2, tab);
+	}
+}
+
+
+
+void effectue(int n, int* tab) {
+	int L[n]; //
+	int t[n]; //tableau contenant les numéros de sommet dans l'ordre
+	int i;
+	//initialisation du tableau avec les numéros de sommets du graphe
+	for (i = 0; i<n; i++) {
+		t[i] = i;
+	}
+	//initialisation du tableau qui va recevoir les différents arragements
+	for (i = 0; i<(n*factorial(n)); i++) {
+		tab[i] = n;
+	}
+	arrangements(n, 0, L, t, tab);
+}
+
+float retournePoid(struct TypGraphe *graphe,int gauche, int droite) {
+	float res = 0;
+	
+	int i = 0;
+	struct TypVoisins* listes;
+	listes = graphe->listesAdjacences;
+	listes++;
+	while (listes->voisin != NULL) {
+		if (listes->voisin == -1/*gauche*/) {
+		}
+		else {
+
+			if (listes->voisin == gauche) {
+				struct TypVoisins *tmp;
+				tmp = listes->voisinSuivant;
+				if (tmp != NULL) {
+
+					while (tmp->voisin != -1) {
+						if (tmp->voisin == droite) {
+							return tmp->poid;
+						}
+						tmp = tmp->voisinSuivant;
+					}
+				}
+			}
+
+		}
+		listes++;
+		i++;
+	}
+
+
+	return res;
+}
+
+void solution_exacte(struct TypGraphe *graphe) {
+	int nbSommets = graphe->nbMaxSommets-1;
+	int i;
+	//trouver tous les circuits, calculer leur cout, garder le meilleur
+	int tab[nbSommets*factorial(nbSommets)]; //tableau des parcours possibles
+	effectue(nbSommets, tab);
+	float couts[factorial(nbSommets)]; //tableau des couts des parcours
+	tab[nbSommets*factorial(nbSommets)] = nbSommets-1;
+	for (i = 0; i<factorial(nbSommets); i++) { //pour chaque parcours
+		int j;
+		float somme = 0;
+		for (j = 0; j<nbSommets; j++) { //
+			//struct list_node* arete = searchNode(graphe->listesAdjacences[tab[i*nbSommets + j]], tab[i*nbSommets + j + 1]); //
+			// retourne l'arrete 
+			printf("g: %d,   d: %d\t", tab[i*nbSommets + j]+1, tab[i*nbSommets + j+1]+1);
+			float arete = retournePoid(graphe, tab[i*nbSommets + j] + 1, tab[i*nbSommets + j + 1] + 1);
+			
+			somme += arete;
+		}
+		printf(" ::: %f", somme);
+		printf("\n");
+		couts[i] = somme;
+	}
+	int min = couts[0];
+	int indice = 0;
+	for (i = 1; i<factorial(nbSommets); i++) {
+		if (couts[i]<min) {
+			min = couts[i];
+			indice = i;
+		}
+	}
+	printf("Un des circuits hamiltoniens optimaux pour ce graphe a pour cout %f et est : ", couts[indice]);
+	for (i = 0; i<nbSommets; i++) {
+		printf("%d ", tab[indice*nbSommets + i]+1);
+	}
+}
+
+/*
+void solutionPlusProcheVoisin(int *V, struct TypGraphe *graphe) {
+	int i, sommet, sommetTMP, sommetParcourut=0;
+	int nbSommets = graphe->nbMaxSommets - 1;
+	int parcours[nbSommets];
+	int sommetDejaPris[nbSommets];
+	float poids=0, poidsMin=0;
+	for (i = 0; i < nbSommets; i++) {
+		sommetDejaPris[i] = 0;
+	}
+	for (i = 1; i <= nbSommet; i++) {
+		if (i == 1) {
+			heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
+			pushBestVoisin(h, graphe, i);
+			//printf("\n");
+			sommetDejaPris[0] = 1;
+			sommetParcourut++;
+			sommet = pop(h);
+			poids = poids + retournePoid(graphe, i, sommet);
+			while (sommetParcourut<nbSommets) {
+				if (sommetDejaPris[sommet - 1] == 1) {
+					sommet = pop(h);
+				}
+				else {
+					pushBestVoisin(h, graphe, sommet);
+					sommetTMP = pop(h);
+					poids = poids + retournePoid(graphe, sommet, sommetTMP);
+					sommet = sommetTMP;
+					//continuer a comparer les poids de chaque parcours de chaque sommet
+
+				}
+			}
+		}
+
+	}
+}*/

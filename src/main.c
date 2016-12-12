@@ -77,13 +77,6 @@ void choix(struct TypGraphe *graphe) {
 
 }
 
-unsigned long factorial(unsigned long f)
-{
-	if (f == 0)
-		return 1;
-	return(f * factorial(f - 1));
-}
-
 int main(int argc, char **argv)
 {
 	if (argc != 3) {
@@ -116,7 +109,7 @@ int main(int argc, char **argv)
 	printf("%d\n", pop(h));
 
 	int i, nbrSommet = graphe->nbMaxSommets - 1;
-	printf("nbr :%d\n", factorial(nbrSommet) * sizeof(int *));
+	printf("nbr :%d\n", factorial(nbrSommet));
 
 	int **liste;
 	liste = (int **)malloc(factorial(nbrSommet) * sizeof(int *));
@@ -131,12 +124,14 @@ int main(int argc, char **argv)
 
 	for (i = 0; i<nbrSommet; i++) {
 		V[i] = i + 1;
-		//printf("%d\n", i);
+		printf("%d\n", i+1);
 	}
 
-	int res = enumereCycles(liste, prefixe,0, V, nbrSommet,0);
+	//int res = enumereCycles(liste, prefixe,0, V, nbrSommet,0);
 
-	printf("%d\n", res);
+	//printf("%d\n", res);
+	solution_exacte(graphe);
+
 
 
 	
