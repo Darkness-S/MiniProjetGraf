@@ -577,29 +577,6 @@ int taille(int *V){
 	return t-1;
 }
 
-
-/*void enregistrementSommet(int n, int k, int *L, int *t, int *tab) {
-	int i, j, j1, t2[n];
-	if (k == n) {
-		for (i = 0; i < n; i++) {
-			for (j = 0; j < n*factorielle(n) && tab[j] != n; j++) {
-			}
-			tab[j] = L[i];
-		}
-		return;
-	}
-	for (i = 0; i < n - k; i++) {
-		L[k] = t[i];
-		for (j = 0, j1 = 0; j < n - k, j++) {
-			if (j != i) {
-				t2[j1] = t[j];
-				j1++
-			}
-		}
-		enregistrementSommet(n, k + 1, L, t2, tab);
-	}
-}*/
-
 void change(int *V,int x, int ta) {
 
 	int *tmp = malloc((ta-1) * sizeof(int));
@@ -718,52 +695,42 @@ unsigned long factorial(unsigned long f)
 	return(f * factorial(f - 1));
 }
 
-void arrangements(int n, int k, int *L, int *t, int* tab) {
-	int i;
-	int j;
-	int j1;
-	int t2[n]; //
-			   //si on est dans la dernière itération
+void fctRec( int *l, int *t, int* t2, int n, int k) {
+	int i,j,j1;
+	int t3[n]; 
 	if (k == n) {
-		//pour chaque numéro de sommet
 		for (i = 0; i<n; i++) {
-			//on cherche la première case du tableau qui n'est pas encore un sommet
-			for (j = 0; j<n*factorial(n) && tab[j] != n; j++) {
+			for (j = 0; j<n*factorial(n) && t2[j] != n; j++) {
 			}
-			//et on y met le sommet courant i
-			tab[j] = L[i];
+			t2[j] = l[i];
 		}
 		return;
 	}
-	//pour chaque numéro de sommet de l'itération courante
 	for (i = 0; i<n - k; i++) {
-		//on met
-		L[k] = t[i];
+		l[k] = t[i];
 		for (j = 0, j1 = 0; j<n - k; j++) {
 			if (j != i) {
-				t2[j1] = t[j];
+				t3[j1] = t[j];
 				j1++;
 			}
 		}
-		arrangements(n, k + 1, L, t2, tab);
+		fctRec(l, t3, t2, n, k + 1);
 	}
 }
 
 
 
-void effectue(int n, int* tab) {
-	int L[n]; //
-	int t[n]; //tableau contenant les numéros de sommet dans l'ordre
+void commence(int* t,int n) {
+	int l[n]; 
+	int tmp[n]; 
 	int i;
-	//initialisation du tableau avec les numéros de sommets du graphe
 	for (i = 0; i<n; i++) {
-		t[i] = i;
+		tmp[i] = i;
 	}
-	//initialisation du tableau qui va recevoir les différents arragements
 	for (i = 0; i<(n*factorial(n)); i++) {
-		tab[i] = n;
+		t[i] = n;
 	}
-	arrangements(n, 0, L, t, tab);
+	fctRec( l, tmp, t,n, 0);
 }
 
 float retournePoid(struct TypGraphe *graphe,int gauche, int droite) {
@@ -774,7 +741,7 @@ float retournePoid(struct TypGraphe *graphe,int gauche, int droite) {
 	listes = graphe->listesAdjacences;
 	listes++;
 	while (listes->voisin != NULL) {
-		if (listes->voisin == -1/*gauche*/) {
+		if (listes->voisin == -1) {
 		}
 		else {
 
@@ -804,38 +771,35 @@ float retournePoid(struct TypGraphe *graphe,int gauche, int droite) {
 void solution_exacte(struct TypGraphe *graphe) {
 	int nbSommets = graphe->nbMaxSommets-1;
 	int i;
-	//trouver tous les circuits, calculer leur cout, garder le meilleur
-	int tab[nbSommets*factorial(nbSommets)]; //tableau des parcours possibles
-	effectue(nbSommets, tab);
-	float couts[factorial(nbSommets)]; //tableau des couts des parcours
-	tab[nbSommets*factorial(nbSommets)] = nbSommets-1;
-	for (i = 0; i<factorial(nbSommets); i++) { //pour chaque parcours
+	int t[nbSommets*factorial(nbSommets)];
+	commence(t, nbSommets);
+	float solutions[factorial(nbSommets)]; 
+	t[nbSommets*factorial(nbSommets)] = nbSommets-1;
+	for (i = 0; i<factorial(nbSommets); i++) {
 		int j;
 		float somme = 0;
-		for (j = 0; j<nbSommets; j++) { //
-			//struct list_node* arete = searchNode(graphe->listesAdjacences[tab[i*nbSommets + j]], tab[i*nbSommets + j + 1]); //
-			// retourne l'arrete 
-			printf("g: %d,   d: %d\t", tab[i*nbSommets + j]+1, tab[i*nbSommets + j+1]+1);
-			float arete = retournePoid(graphe, tab[i*nbSommets + j] + 1, tab[i*nbSommets + j + 1] + 1);
-			
+		for (j = 0; j<nbSommets; j++) { 
+			printf("g: %d,   d: %d\t", t[i*nbSommets + j]+1, t[i*nbSommets + j+1]+1);
+			float arete = retournePoid(graphe, t[i*nbSommets + j] + 1, t[i*nbSommets + j + 1] + 1);
 			somme += arete;
 		}
 		printf(" ::: %f", somme);
 		printf("\n");
-		couts[i] = somme;
+		solutions[i] = somme;
 	}
-	int min = couts[0];
-	int indice = 0;
+	int min = solutions[0];
+	int k = 0;
 	for (i = 1; i<factorial(nbSommets); i++) {
-		if (couts[i]<min) {
-			min = couts[i];
-			indice = i;
+		if (solutions[i]<min) {
+			min = solutions[i];
+			k = i;
 		}
 	}
-	printf("Un des circuits hamiltoniens optimaux pour ce graphe a pour cout %f et est : ", couts[indice]);
+	printf("La solution optimale est : %f\n", solutions[k]);
 	for (i = 0; i<nbSommets; i++) {
-		printf("%d ", tab[indice*nbSommets + i]+1);
+		printf("%d -", t[k*nbSommets + i]+1);
 	}
+	printf("\n");
 }
 
 /*
