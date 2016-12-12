@@ -24,57 +24,64 @@ void afficheMenu(){
 	printf("3- Insertion de sommet\n");
 	printf("4- Insertion d'arrete\n");
 	printf("5- Suppression d'un sommet\n");
-	printf("6- Suppression d'une arrète\n");
-	printf("7- Affichage\n");
-	printf("8- Sauvegarde\n");
-	printf("9- Quitter\n");
-	printf("--------------------------------------------\n");
-	
+printf("6- Suppression d'une arrète\n");
+printf("7- Affichage\n");
+printf("8- Sauvegarde\n");
+printf("9- Quitter\n");
+printf("--------------------------------------------\n");
+
 }
 
-void choix(struct TypGraphe *graphe){
-	
+void choix(struct TypGraphe *graphe) {
+
 	int quit = 0;
-	while(quit == 0){
-		
+	while (quit == 0) {
+
 		afficheMenu();
-		
+
 		int choix;
-		scanf("%d",&choix);
-		
-		switch(choix){
-			case 1:
-				creationGraphe(graphe);
+		scanf("%d", &choix);
+
+		switch (choix) {
+		case 1:
+			creationGraphe(graphe);
 			break;
-			case 2:
-				lectureGraphe(graphe);
+		case 2:
+			lectureGraphe(graphe);
 			break;
-			case 3:
-				insertionSommet(graphe);
+		case 3:
+			insertionSommet(graphe);
 			break;
-			case 4:
-				insertionArete(graphe);
+		case 4:
+			insertionArete(graphe);
 			break;
-			case 5:
-				suppressionSommet(graphe);
+		case 5:
+			suppressionSommet(graphe);
 			break;
-			case 6:
-				graphe = suppressionArete(graphe);
+		case 6:
+			graphe = suppressionArete(graphe);
 			break;
-			case 7:
-				afficheGraphe(graphe);
+		case 7:
+			afficheGraphe(graphe);
 			break;
-			case 8:
-				enregistrerGraphe(graphe);
-				break;
-			case 9:
-				free(graphe);
-				quit = 1;
+		case 8:
+			enregistrerGraphe(graphe);
+			break;
+		case 9:
+			free(graphe);
+			quit = 1;
 			break;
 		}
-	
+
 	}
-	
+
+}
+
+unsigned long factorial(unsigned long f)
+{
+	if (f == 0)
+		return 1;
+	return(f * factorial(f - 1));
 }
 
 int main(int argc, char **argv)
@@ -86,27 +93,52 @@ int main(int argc, char **argv)
 
 	struct TypGraphe *graphe = malloc(sizeof(struct TypGraphe));
 	//choix(graphe);
-	
+
 	int n = atoi(argv[1]);
-	create(graphe,n,'n');
-	
+	create(graphe, n, 'n');
+
 	int graine = atoi(argv[2]);
 	srand(graine);
 
 	int x[n];
 	int y[n];
-	
-	sommetAleatoire(graphe,n,graine,x,y);
+
+	sommetAleatoire(graphe, n, graine, x, y);
 	//afficheCoordonee(x, y, n);
 	creationArrete(graphe, n, x, y);
 	afficheGraphe(graphe);
-	heap_t *h = (heap_t *)calloc(1, sizeof (heap_t));
+	heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
 	pushBestVoisin(h, graphe, 1);
 	printf("\n");
-	for (int i=0; i<(graphe->nbMaxSommets)-3; i++){
-		printf("%d - ",pop(h));
+	for (int i = 0; i < (graphe->nbMaxSommets) - 3; i++) {
+		printf("%d - ", pop(h));
 	}
-	printf("%d\n",pop(h));
+	printf("%d\n", pop(h));
+
+	int i, nbrSommet = graphe->nbMaxSommets - 1;
+	printf("nbr :%d\n", factorial(nbrSommet) * sizeof(int *));
+
+	int **liste;
+	liste = (int **)malloc(factorial(nbrSommet) * sizeof(int *));
+	for (i = 0; i < factorial(nbrSommet); i++) {
+		liste[i] = (int *)malloc((2 * nbrSommet) * sizeof(int));
+		liste[i] = NULL;
+	}
+
+	char *prefixe = malloc((2 * nbrSommet) * sizeof(int));
+
+	int *V = malloc(nbrSommet * sizeof(int));
+
+	for (i = 0; i<nbrSommet; i++) {
+		V[i] = i + 1;
+		//printf("%d\n", i);
+	}
+
+	int res = enumereCycles(liste, prefixe,0, V, nbrSommet,0);
+
+	printf("%d\n", res);
+
+
 	
 	return 0;
 }

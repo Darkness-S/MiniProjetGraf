@@ -567,3 +567,122 @@ void pushBestVoisin(heap_t *h, struct TypGraphe *graphe,int num){
 	}
 }
 
+int taille(int *V){
+	int t = 0;
+	if (V != NULL) {
+		while (V[t]!=NULL) {
+			t++;
+		}
+	}
+	return t-1;
+}
+
+void change(int *V,int x, int ta) {
+
+	int *tmp = malloc((ta-1) * sizeof(int));
+	int t = 0;
+	int i = 0;
+	while (i < ta) {
+		if (i+1 != x) {
+			V[t] = i+1;
+			t++;
+		}
+		i++;
+		
+	}
+	/*t = 0;
+	while (tmp[t] != NULL) {
+		printf("%d\t",tmp[t]);
+		t++;
+	}*/
+	
+
+	//V = malloc((ta-1) * sizeof(int));
+
+	//*V = *tmp;
+
+}
+
+void ajouteListeParcour(int **liste, int *prefixe, int tprefixe, int x, int cpt) {
+	int j = 0;
+	int **ltmp = liste;
+	printf("\npatte : %d\n", cpt);
+
+	if (cpt < 10) {
+		for (j = 0; j < tprefixe; j++) {
+			//printf("%d\n", cpt);	
+			ltmp[cpt][j] = prefixe[j];
+		}
+		ltmp[cpt][j] = x;
+		printf("\npatte : %d\n", cpt);
+	}
+
+	/*while (ltmp != NULL) {
+		ltmp++;
+		j++;
+	}
+	printf("%d\n", j);
+	/*
+	for (j = 0; j<tprefixe+1; j++) {
+		printf("%d - ", prefixe[j]);
+		//ltmp[0][j] = prefixe[j];
+	}
+	printf("\n");*/
+	//ltmp[0][j] = x;
+}
+
+
+int enumereCycles(int **liste,int *prefixe,int tprefixe, int *V, int t,int cpt) {
+	/*action enumereCycles(listeDesParcours, prefixe, V)
+		Données(paramètres passés par valeur) :
+	prefixe: une liste de sommets constituant le début d’un parcours
+		V : l’ensemble des sommets du graphe
+		Données / Résultat(paramètre passé par adresse) :
+		listeDesParcours : une liste de listes de sommets
+		DEBUT
+		Si V = { x } Alors // il n’y a plus qu’un seul sommet qui n’est pas dans le parcours
+		listeDesParcours  listeDesParcours + (prefixe + x)
+		// on ajoute à la liste des parcours le parcours obtenu en rajoutant
+		// le sommet x au préfixe
+		Sinon
+		Pour tout sommet x de V Faire
+		enumereCycles(listeDesParcours, prefixe + x, V –{ x })
+		FPour
+		FSi
+		FIN*/
+	
+	if (t == 1) {
+		//printf("done\n");
+		int ta = 0;
+		while (ta<tprefixe) {
+			printf("%d",prefixe[ta]);
+
+			ta++;
+		}
+		printf("\n");
+		//ajouteListeParcour(liste, prefixe, tprefixe, V[t],cpt);
+	}
+	else {
+		
+		t = t - 1;
+		printf("%d\n", V[0]);
+		int ta = 0;
+		while (ta<t) {
+			
+			prefixe[tprefixe] = V[ta]; // ajoute nbr au prefixe
+			change(V,V[ta] , t); // Supprime x de la liste des sommets
+			enumereCycles(liste, prefixe, tprefixe+1, V, t,cpt);// Appelle recursif
+			ta++;
+
+		}
+		 
+
+
+	}
+	
+
+	
+		return cpt;
+
+}
+
