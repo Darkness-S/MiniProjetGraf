@@ -802,39 +802,39 @@ void solution_exacte(struct TypGraphe *graphe) {
 	printf("\n");
 }
 
-/*
-void solutionPlusProcheVoisin(int *V, struct TypGraphe *graphe) {
-	int i, sommet, sommetTMP, sommetParcourut=0;
-	int nbSommets = graphe->nbMaxSommets - 1;
-	int parcours[nbSommets];
-	int sommetDejaPris[nbSommets];
-	float poids=0, poidsMin=0;
-	for (i = 0; i < nbSommets; i++) {
-		sommetDejaPris[i] = 0;
-	}
-	for (i = 1; i <= nbSommet; i++) {
-		if (i == 1) {
-			heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
-			pushBestVoisin(h, graphe, i);
-			//printf("\n");
-			sommetDejaPris[0] = 1;
-			sommetParcourut++;
-			sommet = pop(h);
-			poids = poids + retournePoid(graphe, i, sommet);
-			while (sommetParcourut<nbSommets) {
-				if (sommetDejaPris[sommet - 1] == 1) {
-					sommet = pop(h);
-				}
-				else {
-					pushBestVoisin(h, graphe, sommet);
-					sommetTMP = pop(h);
-					poids = poids + retournePoid(graphe, sommet, sommetTMP);
-					sommet = sommetTMP;
-					//continuer a comparer les poids de chaque parcours de chaque sommet
-
-				}
-			}
-		}
-
-	}
-}*/
+//
+//void solutionPlusProcheVoisin(int *V, struct TypGraphe *graphe) {
+//	int i, sommet, sommetTMP, sommetParcourut=0;
+//	int nbSommets = graphe->nbMaxSommets - 1;
+//	int parcours[nbSommets];
+//	int sommetDejaPris[nbSommets];
+//	float poids=0, poidsMin=0;
+//	for (i = 0; i < nbSommets; i++) {
+//		sommetDejaPris[i] = 0;
+//	}
+//	for (i = 1; i <= nbSommet; i++) {
+//		if (i == 1) {
+//			heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
+//			pushBestVoisin(h, graphe, i);
+//			//printf("\n");
+//			sommetDejaPris[0] = 1;
+//			sommetParcourut++;
+//			sommet = pop(h);
+//			poids = poids + retournePoid(graphe, i, sommet);
+//			while (sommetParcourut<nbSommets) {
+//				if (sommetDejaPris[sommet - 1] == 1) {
+//					sommet = pop(h);
+//				}
+//				else {
+//					pushBestVoisin(h, graphe, sommet);
+//					sommetTMP = pop(h);
+//					poids = poids + retournePoid(graphe, sommet, sommetTMP);
+//					sommet = sommetTMP;
+//					//continuer a comparer les poids de chaque parcours de chaque sommet
+//
+//				}
+//			}
+//		}
+//
+//	}
+//}
