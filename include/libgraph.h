@@ -730,29 +730,25 @@ void commence(int* t,int n) {
 float retournePoid(struct TypGraphe *graphe,int gauche, int droite) {
 	float res = 0;
 	
-	int i = 0;
+	int i = 1;
 	struct TypVoisins* listes;
 	listes = graphe->listesAdjacences;
 	listes++;
 	while (listes->voisin != NULL) {
-		if (listes->voisin == -1) {
-		}
-		else {
-
-			if (listes->voisin == gauche) {
-				struct TypVoisins *tmp;
-				tmp = listes->voisinSuivant;
-				if (tmp != NULL) {
-
-					while (tmp->voisin != -1) {
-						if (tmp->voisin == droite) {
-							return tmp->poid;
-						}
-						tmp = tmp->voisinSuivant;
-					}
-				}
+		if (i == gauche) {
+			//printf("GAUCHE %d\n", i);
+			if (listes->voisin == droite) {
+				res = listes->poid;
 			}
-
+			struct TypVoisins *tmp;
+			tmp = listes->voisinSuivant;
+			while (tmp->voisin != -1) {
+				//printf("PASSE %d",tmp->voisin);
+				if (tmp->voisin == droite) {
+					res = tmp->poid;
+				}
+				tmp = tmp->voisinSuivant;
+			}
 		}
 		listes++;
 		i++;
@@ -802,7 +798,7 @@ void solutionPlusProcheVoisin(struct TypGraphe *graphe, int sommetDepart) {
 	int nbSommets = graphe->nbMaxSommets - 1;
 	int parcours[nbSommets];
 	int sommetDejaPris[nbSommets];
-	float poids=0, poidsMin=0;
+	//float poids=0, poidsMin=0;
 	for (i = 0; i < nbSommets; i++) {
 		sommetDejaPris[i] = 0;
 	}
@@ -830,8 +826,73 @@ void solutionPlusProcheVoisin(struct TypGraphe *graphe, int sommetDepart) {
 	}
 }	
 
-void solutionPlusPetitDetour(struct TypGraphe *graphe, int *troisSommetDeDepart){
-	
+void solutionPlusPetitDetour(struct TypGraphe *graphe, int s1, int s2, int s3){
+	int i, sommet, sommetParcourut=3;
+	int gauche, droite, sommetARajout;
+	int nbSommets = graphe->nbMaxSommets - 1;
+	int tabParcours[nbSommets];
+	int sommetDejaPris[nbSommets];
+	float poids=0, poidsMin=9999;
+	for (i = 0; i < nbSommets; i++) {
+		sommetDejaPris[i] = 0;
+		tabParcours[i]=0;
+	}
+	tabParcours[0]=s1;
+	tabParcours[1]=s2;
+	tabParcours[2]=s3;
+	sommetDejaPris[s1-1]=1;
+	sommetDejaPris[s2-1]=1;
+	sommetDejaPris[s3-1]=1;
+	printf("Debut : %d : %f : %f\n", sommetParcourut, poidsMin, poids); 
+	while(sommetParcourut<nbSommets){
+		printf("EntreBoucle Sommet Parcourut %d\n", sommetParcourut);
+		for(i=0; i<sommetParcourut; i++){
+			if(i==sommetParcourut){
+				for(int j=0; j<nbSommets; j++){
+				 	if(sommetDejaPris[j]==0){
+						poids=retournePoid(graphe, tabParcours[i], j+1);
+						//printf("Poids BF1 : %f\n", poids); 
+						poids=poids+retournePoid(graphe, j+1, tabParcours[0]);
+						//printf("Poids BF2 : %f\n", poids); 
+						if (poids<poidsMin){
+							poidsMin=poids;
+							gauche=i;
+							sommetARajout=j+1;
+							//printf("BF %f : %f : %d : %d : %d : %d\n", poidsMin, poids, gauche, sommetARajout, sommetParcourut, i);
+						}
+					}
+				}
+			}else{
+				for(int j=0; j<nbSommets; j++){
+				 	if(sommetDejaPris[j]==0){
+						poids=retournePoid(graphe, tabParcours[i], j+1);
+						//printf("Poids BN1 : %f\n", poids); 
+						poids=poids+retournePoid(graphe, j+1, tabParcours[i+1]);
+						//printf("Poids BN2 : %f\n", poids); 
+						if (poids<poidsMin){
+							poidsMin=poids;
+							gauche=i;
+							sommetARajout=j+1;
+							//printf("BN %f : %f : %d : %d : %d : %d\n", poidsMin, poids, gauche, sommetARajout, sommetParcourut, i);
+						}
+					}
+				}
+			}
+		}
+		sommetParcourut++;
+		sommetDejaPris[sommetARajout-1]=1;
+		printf("BR %f : %f : %d : %d : %d : %d\n", poidsMin, poids, gauche+1, sommetARajout, sommetParcourut, i);
+		ajoutDansTableau(tabParcours, nbSommets, gauche+1, sommetARajout);
+		poids=0;
+		poidsMin=9999;
+	}
+	for (i=0; i<nbSommets; i++){
+		if (i==0){
+			printf("%d ", tabParcours[i]);
+		}else{
+			printf("- %d ", tabParcours[i]);
+		}
+	}
 }
 
 void ajoutDansTableau(int *tableau, int tailleTableau, int indiceAjout, int sommetAAjouter){
