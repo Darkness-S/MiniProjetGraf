@@ -130,9 +130,9 @@ int main(int argc, char **argv)
 	//int res = enumereCycles(liste, prefixe,0, V, nbrSommet,0);
 
 	//printf("%d\n", res);
-	solution_exacte(graphe);
+	//solution_exacte(graphe);
 
-
+	solutionPlusProcheVoisin(graphe, 1);
 
 	
 	return 0;

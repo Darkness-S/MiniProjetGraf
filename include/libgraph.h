@@ -579,7 +579,7 @@ int taille(int *V){
 
 void change(int *V,int x, int ta) {
 
-	int *tmp = malloc((ta-1) * sizeof(int));
+	//int *tmp = malloc((ta-1) * sizeof(int));
 	int t = 0;
 	int i = 0;
 	while (i < ta) {
@@ -590,12 +590,6 @@ void change(int *V,int x, int ta) {
 		i++;
 		
 	}
-	t = 0;
-	while (V[t] != NULL) {
-		printf("%d\t",V[t]);
-		t++;
-	}
-	
 
 	//V = malloc((ta-1) * sizeof(int));
 
@@ -802,45 +796,69 @@ void solution_exacte(struct TypGraphe *graphe) {
 	printf("\n");
 }
 
-//
-//void solutionPlusProcheVoisin(int *V, struct TypGraphe *graphe) {
-//	int i, sommet, sommetTMP, sommetParcourut=0;
-//	int nbSommets = graphe->nbMaxSommets - 1;
-//	int parcours[nbSommets];
-//	int sommetDejaPris[nbSommets];
-//	float poids=0, poidsMin=0;
-//	for (i = 0; i < nbSommets; i++) {
-//		sommetDejaPris[i] = 0;
-//	}
-//	for (i = 1; i <= nbSommet; i++) {
-//		if (i == 1) {
-//			heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
-//			pushBestVoisin(h, graphe, i);
-//			//printf("\n");
-//			sommetDejaPris[0] = 1;
-//			sommetParcourut++;
-//			sommet = pop(h);
-//			poids = poids + retournePoid(graphe, i, sommet);
-//			while (sommetParcourut<nbSommets) {
-//				if (sommetDejaPris[sommet - 1] == 1) {
-//					sommet = pop(h);
-//				}
-//				else {
-//					pushBestVoisin(h, graphe, sommet);
-//					sommetTMP = pop(h);
-//					poids = poids + retournePoid(graphe, sommet, sommetTMP);
-//					sommet = sommetTMP;
-//					//continuer a comparer les poids de chaque parcours de chaque sommet
-//
-//				}
-//			}
-//		}
-//
-//	}
-//}
+
+void solutionPlusProcheVoisin(struct TypGraphe *graphe, int sommetDepart) {
+	int i, sommet, sommetParcourut=1;
+	int nbSommets = graphe->nbMaxSommets - 1;
+	int parcours[nbSommets];
+	int sommetDejaPris[nbSommets];
+	float poids=0, poidsMin=0;
+	for (i = 0; i < nbSommets; i++) {
+		sommetDejaPris[i] = 0;
+	}
+	heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
+	pushBestVoisin(h, graphe, sommetDepart);
+	parcours[0]=sommetDepart;
+	sommetDejaPris[sommetDepart-1]=1;
+	while(sommetParcourut<nbSommets){
+		sommet = pop(h);
+		while(sommetDejaPris[sommet-1]==1){
+			sommet=pop(h);
+		}
+		sommetDejaPris[sommet-1]=1;
+		parcours[sommetParcourut]=sommet;
+		pushBestVoisin(h, graphe, sommet);
+		sommetParcourut++;
+	}	
+	printf("Parcours plus proche voisin : ");
+	for (i=0; i<nbSommets; i++){
+		if (i==0){
+			printf("%d ", parcours[i]);
+		}else{
+			printf("- %d ", parcours[i]);
+		}
+	}
+}	
+	/*
+	for (i = 1; i <= nbSommet; i++) {
+		if (i == 1) {
+			heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
+			pushBestVoisin(h, graphe, i);
+			//printf("\n");
+			sommetDejaPris[0] = 1;
+			sommetParcourut++;
+			sommet = pop(h);
+			poids = poids + retournePoid(graphe, i, sommet);
+			while (sommetParcourut<nbSommets) {
+				if (sommetDejaPris[sommet - 1] == 1) {
+					sommet = pop(h);
+				}
+				else {
+					pushBestVoisin(h, graphe, sommet);
+					sommetTMP = pop(h);
+					poids = poids + retournePoid(graphe, sommet, sommetTMP);
+					sommet = sommetTMP;
+					//continuer a comparer les poids de chaque parcours de chaque sommet
+
+				}
+			}
+		}
+
+	}
+}*/
 
 
-void solution_ARPM(struct TypGraphe *graphe) {
+/*void solution_ARPM(struct TypGraphe *graphe) {
 
 	/*
 		POUR chaque sommet u de V FAIRE
@@ -863,7 +881,7 @@ void solution_ARPM(struct TypGraphe *graphe) {
 	*/
 
 	// Initialisation de V
-	int i = 0;
+	/*int i = 0;
 	int *V = malloc(nbrSommet * sizeof(int));
 
 	for (i = 0; i < nbrSommet; i++) {
@@ -883,10 +901,4 @@ void solution_ARPM(struct TypGraphe *graphe) {
 
 	prio[r] = 0;
 	int *F = V;
-
-
-
-
-
-
-}
+}*/
