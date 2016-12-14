@@ -829,34 +829,25 @@ void solutionPlusProcheVoisin(struct TypGraphe *graphe, int sommetDepart) {
 		}
 	}
 }	
-	/*
-	for (i = 1; i <= nbSommet; i++) {
-		if (i == 1) {
-			heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
-			pushBestVoisin(h, graphe, i);
-			//printf("\n");
-			sommetDejaPris[0] = 1;
-			sommetParcourut++;
-			sommet = pop(h);
-			poids = poids + retournePoid(graphe, i, sommet);
-			while (sommetParcourut<nbSommets) {
-				if (sommetDejaPris[sommet - 1] == 1) {
-					sommet = pop(h);
-				}
-				else {
-					pushBestVoisin(h, graphe, sommet);
-					sommetTMP = pop(h);
-					poids = poids + retournePoid(graphe, sommet, sommetTMP);
-					sommet = sommetTMP;
-					//continuer a comparer les poids de chaque parcours de chaque sommet
 
-				}
-			}
-		}
+void solutionPlusPetitDetour(struct TypGraphe *graphe, int *troisSommetDeDepart){
+	
+}
 
+void ajoutDansTableau(int *tableau, int tailleTableau, int indiceAjout, int sommetAAjouter){
+	int tableauTmp[tailleTableau];
+	int i=0;
+	for (i=0; i<tailleTableau; i++){
+		tableauTmp[i]=0;
 	}
-}*/
-
+	for (int x = indiceAjout-1, i=0; x<tailleTableau; x++, i++){
+		tableauTmp[i]=tableau[x];
+	}
+	tableau[indiceAjout-1]=sommetAAjouter;
+	for(int x =indiceAjout, i=0; x<tailleTableau;x++,i++){
+		tableau[x]=tableauTmp[i];
+	}	
+}
 
 /*void solution_ARPM(struct TypGraphe *graphe) {
 

@@ -119,7 +119,13 @@ int main(int argc, char **argv)
 	}
 
 	char *prefixe = malloc((2 * nbrSommet) * sizeof(int));
-
+	printf("\n");
+	int tab[10]={1,5,6,7,2,8,0,0,0,0};
+	ajoutDansTableau(tab, 10, 3, 42);
+	for(int z=0; z<10; z++){
+		printf("%d - ", tab[z]);
+	} 
+	printf("\n");
 	int *V = malloc(nbrSommet * sizeof(int));
 
 	for (i = 0; i<nbrSommet; i++) {
