@@ -838,3 +838,55 @@ void solution_exacte(struct TypGraphe *graphe) {
 //
 //	}
 //}
+
+
+void solution_ARPM(struct TypGraphe *graphe) {
+
+	/*
+		POUR chaque sommet u de V FAIRE
+			prio[u] <- infini // tab de nbr 2222;
+			pere[u] <- null   // tab 
+		FPOUR
+
+		r <- choisir un sommet de V // sommet: 1
+		prio[r]<-0;
+		F<-V // F est la file de priorité
+		TQ F!=0 FAIRE
+			u<-extraireMin(F)
+			POUR chaque voisin v de u FAIRE
+				SI v de F et poids(u,v)<prio[v] ALORS
+					pere[v]<-u
+					prio[v]<-poids(u,v)
+				FSI
+			FPOUR
+		FTQ
+	*/
+
+	// Initialisation de V
+	int i = 0;
+	int *V = malloc(nbrSommet * sizeof(int));
+
+	for (i = 0; i < nbrSommet; i++) {
+		V[i] = i + 1;
+		printf("%d\n", i + 1);
+	}
+
+	int *pere = malloc(nbrSommet * sizeof(int));
+	int *prio = malloc(nbrSommet * sizeof(int));
+
+	for (i = 0; i < nbrSommet; i++) {
+		pere[i] = NULL;
+		prio[i] = 2222;
+	}
+
+	int r = 0; // choisir un sommet de V (-1) les sommets commence par 1
+
+	prio[r] = 0;
+	int *F = V;
+
+
+
+
+
+
+}
