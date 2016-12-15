@@ -1,73 +1,49 @@
 #include "../include/libgraphProjet.h" 
 
+//Fonction donnant les coordonnées des nouveaux sommet à rajouter
 void sommetAleatoire(struct TypGraphe *graphe ,int n, int graine, int x[], int y[]) {
 	// creation de n sommet
-
 	// tirage aléatoire des coordonnées
 	int i = 0;
-
 	for (i = 0; i < n; i++) {
-
 		int coordX = i;
 		int coordY = i;
 		// ALEATOIRE
-
 		x[i] = rand()%100;//coordX;
 		y[i] = rand()%100;//coordX;
-
 		//insert le sommet dans le graphe
-
 		insertionSommet(graphe);
-
 	}
-
 }
 
+//Fonction d'affichage des coordonnées d'un sommet pour le déboggage
 void afficheCoordonee(int x[], int y[],int n) {
 	int i;
 	for (i = 0; i < n; i++) {
-
 		printf("%d ; %d\n", x[i], y[i]);
-
 	}
 }
 
+//Autre fonction de création d'arête par rapport à certaines coordonnées données et calcul de son poids
 void creationArrete(struct TypGraphe *graphe, int n, int x[], int y[]) {
-
 	// Chaque sommet a une arrete vers tous les sommets ( GRAPHE COMPLET )
-	/*
 	int i = 0;
-	int j = 0;
-
-	int gauche = i;
-	int droite = j;
-
-	int poid = 0;
-	// poid = calcul de la distance entre coordonné de gauche et de droite 
-
-
-	ajouterArete(graphe, gauche, droite, poid);
-	*/
-	int i = 0;
-	int j = 0;
-	//int gauche = 0,droite = 0, poid = 0;
-	
+	int j = 0;	
 	for (i = 1; i <= n; i++) {
 		for (j = 1; j <= n; j++) {
 			int gauche = i;
 			int droite = j;
-
 			double poid=0;
 			// poid = calcul de la distance entre coordonné de gauche et de droite 
 			poid = (double)sqrt(pow((x[i - 1] - x[j - 1]),2) + pow((y[i - 1] - y[j - 1]),2));
-			//poid = sqrt((int)i);
 			if (gauche != droite) {
 				ajouterArete(graphe, gauche, droite, (int)poid);
 			}
 		}
 	}
 }
-	
+
+//Fonction d'ajout d'un sommet dans une file de priorité	
 void push (filePrio *f, int prio, int sommet) {	
     if (f->lon + 1 >= f->taille) {
         f->taille = f->taille ? f->taille * 2 : 4;
@@ -85,6 +61,7 @@ void push (filePrio *f, int prio, int sommet) {
     f->lon++;
 }
  
+//Fonction permettant de récupérer et retirer le premier élément de la file de priorité 
 int pop (filePrio *f) {
     int i, j, k;
     if (!f->lon) {
@@ -113,6 +90,7 @@ int pop (filePrio *f) {
     return sommet;
 }	
 
+//Fonction permettant d'ajouter le voisin le plus proche d'un sommet dans la fille de priorité
 void pushBestVoisin(filePrio *f, struct TypGraphe *graphe,int num){
 	struct TypVoisins* listes;
 	listes = graphe->listesAdjacences;	
@@ -135,6 +113,8 @@ void pushBestVoisin(filePrio *f, struct TypGraphe *graphe,int num){
 	}
 }
 
+/*
+//Fonction censé retourner la taille d'un tableau. Non utilisé
 int taille(int *V){
 	int t = 0;
 	if (V != NULL) {
@@ -143,11 +123,10 @@ int taille(int *V){
 		}
 	}
 	return t-1;
-}
+}*/
 
+//Fonction de réorganisation d'un tableau avant diminution d'un indice
 void change(int *V,int x, int ta) {
-
-	//int *tmp = malloc((ta-1) * sizeof(int));
 	int t = 0;
 	int i = 0;
 	while (i < ta) {
@@ -155,45 +134,24 @@ void change(int *V,int x, int ta) {
 			V[t] = i+1;
 			t++;
 		}
-		i++;
-		
+		i++;		
 	}
-
-	//V = malloc((ta-1) * sizeof(int));
-
-	//*V = *tmp;
-
 }
 
+/*
+//Fonction d'ajout d'un parcours dans la liste des parcours. Non utilisé
 void ajouteListeParcour(int* liste, int *prefixe, int tprefixe, int x, int cpt) {
 	int j = 0;
 	int **ltmp = liste;
-	printf("\npatte : %d\n", cpt);
-
 	if (cpt < 10) {
 		for (j = 0; j < tprefixe; j++) {
-			//printf("%d\n", cpt);	
 			ltmp[cpt][j] = prefixe[j];
 		}
 		ltmp[cpt][j] = x;
-		printf("\npatte : %d\n", cpt);
 	}
+}*/
 
-	/*while (ltmp != NULL) {
-		ltmp++;
-		j++;
-	}
-	printf("%d\n", j);
-	/*
-	for (j = 0; j<tprefixe+1; j++) {
-		printf("%d - ", prefixe[j]);
-		//ltmp[0][j] = prefixe[j];
-	}
-	printf("\n");*/
-	//ltmp[0][j] = x;
-}
-
-
+//Fonction d'énumération de tout les cycles eulériens (donnée dans le cours). Non utilisé
 /*int enumereCycles(int **liste,int *prefixe,int tprefixe, int *V, int t,int cpt) {
 	/*action enumereCycles(listeDesParcours, prefixe, V)
 		Données(paramètres passés par valeur) :
@@ -211,45 +169,33 @@ void ajouteListeParcour(int* liste, int *prefixe, int tprefixe, int x, int cpt) 
 		enumereCycles(listeDesParcours, prefixe + x, V –{ x })
 		FPour
 		FSi
-		FIN*/
-	
-	/*if (t == 1) {
+		FIN*/	
+		/*if (t == 1) {
 		//printf("done\n");
 		int ta = 0;
 		while (ta<tprefixe) {
 			printf("%d-",prefixe[ta]);
 			
 			ta++;
-		}
-		
+		}	
 		printf("%d\n", V[t]);
 		//ajouteListeParcour(liste, prefixe, tprefixe, V[t],cpt);
-	}
-	else {
-		
+	}else {		
 		t = t - 1;
 		//printf("%d\n", V[0]);
 		int ta = 0;
-		while (ta<t) {
-			
+		while (ta<t) {			
 			prefixe[tprefixe] = V[ta]; // ajoute nbr au prefixe
 			change(V,V[ta] , t); // Supprime x de la liste des sommets
 			enumereCycles(liste, prefixe, tprefixe+1, V, t,cpt);// Appelle recursif
 			ta++;
-
 		}
 		//t = t - 1;
-		 
-
-
-	}
-	
-
-	
+	}	
 		return cpt;
-
 }*/
 
+//Fonction de calcul d'un factioriel
 unsigned long factorial(unsigned long f){
 	if (f == 0){
 		return 1;
@@ -257,6 +203,7 @@ unsigned long factorial(unsigned long f){
 	return(f * factorial(f - 1));
 }
 
+//Fonction récursive construisant les parcours
 void fctRec( int *l, int *t, int* t2, int n, int k) {
 	int i,j,j1;
 	int t3[n]; 
@@ -280,8 +227,7 @@ void fctRec( int *l, int *t, int* t2, int n, int k) {
 	}
 }
 
-
-
+//Fonction d'appel pour la fonctionb récursive qui récupère les paramètres à lui passer
 void commence(int* t,int n) {
 	int l[n]; 
 	int tmp[n]; 
@@ -295,9 +241,9 @@ void commence(int* t,int n) {
 	fctRec( l, tmp, t,n, 0);
 }
 
+//Fonction retournant le poids d'une arête
 float retournePoid(struct TypGraphe *graphe,int gauche, int droite) {
 	float res = 0;
-	
 	int i = 1;
 	struct TypVoisins* listes;
 	listes = graphe->listesAdjacences;
@@ -321,11 +267,10 @@ float retournePoid(struct TypGraphe *graphe,int gauche, int droite) {
 		listes++;
 		i++;
 	}
-
-
 	return res;
 }
 
+//Fonction calculant la solution optimale
 void solution_exacte(struct TypGraphe *graphe) {
 	int nbSommets = graphe->nbMaxSommets-1;
 	int i;
@@ -336,13 +281,10 @@ void solution_exacte(struct TypGraphe *graphe) {
 	for (i = 0; i<factorial(nbSommets); i++) {
 		int j;
 		float somme = 0;
-		for (j = 0; j<nbSommets; j++) { 
-			printf("g: %d,   d: %d\t", t[i*nbSommets + j]+1, t[i*nbSommets + j+1]+1);
+		for (j = 0; j<nbSommets-1; j++) {
 			float arete = retournePoid(graphe, t[i*nbSommets + j] + 1, t[i*nbSommets + j + 1] + 1);
 			somme += arete;
 		}
-		printf(" ::: %f", somme);
-		printf("\n");
 		solutions[i] = somme;
 	}
 	int min = solutions[0];
@@ -355,18 +297,21 @@ void solution_exacte(struct TypGraphe *graphe) {
 	}
 	printf("La solution optimale est : %f\n", solutions[k]);
 	for (i = 0; i<nbSommets; i++) {
-		printf("%d -", t[k*nbSommets + i]+1);
+		if(i==nbSommets-1){
+			printf("%d", t[k*nbSommets + i]+1);
+		}else{
+			printf("%d - ", t[k*nbSommets + i]+1);
+		}
 	}
 	printf("\n");
 }
 
-
+//Fonction calculant le parcours selon l'heuristique du plus proche voisin
 void solutionPlusProcheVoisin(struct TypGraphe *graphe, int sommetDepart) {
 	int i, sommet, sommetParcourut=1;
 	int nbSommets = graphe->nbMaxSommets - 1;
 	int parcours[nbSommets];
 	int sommetDejaPris[nbSommets];
-	//float poids=0, poidsMin=0;
 	for (i = 0; i < nbSommets; i++) {
 		sommetDejaPris[i] = 0;
 	}
@@ -394,6 +339,7 @@ void solutionPlusProcheVoisin(struct TypGraphe *graphe, int sommetDepart) {
 	}
 }	
 
+//Fonction calculant le parcours selon l'heuristique du plus petit détour
 void solutionPlusPetitDetour(struct TypGraphe *graphe, int s1, int s2, int s3){
 	int i, sommet, sommetParcourut=3;
 	int gauche, droite, sommetARajout;
@@ -411,22 +357,17 @@ void solutionPlusPetitDetour(struct TypGraphe *graphe, int s1, int s2, int s3){
 	sommetDejaPris[s1-1]=1;
 	sommetDejaPris[s2-1]=1;
 	sommetDejaPris[s3-1]=1;
-	//printf("Debut : %d : %f : %f\n", sommetParcourut, poidsMin, poids); 
 	while(sommetParcourut<nbSommets){
-		//printf("EntreBoucle Sommet Parcourut %d\n", sommetParcourut);
 		for(i=0; i<sommetParcourut; i++){
 			if(i==sommetParcourut){
 				for(int j=0; j<nbSommets; j++){
 				 	if(sommetDejaPris[j]==0){
 						poids=retournePoid(graphe, tabParcours[i], j+1);
-						//printf("Poids BF1 : %f\n", poids); 
 						poids=poids+retournePoid(graphe, j+1, tabParcours[0]);
-						//printf("Poids BF2 : %f\n", poids); 
 						if (poids<poidsMin){
 							poidsMin=poids;
 							gauche=i;
 							sommetARajout=j+1;
-							//printf("BF %f : %f : %d : %d : %d : %d\n", poidsMin, poids, gauche, sommetARajout, sommetParcourut, i);
 						}
 					}
 				}
@@ -434,14 +375,11 @@ void solutionPlusPetitDetour(struct TypGraphe *graphe, int s1, int s2, int s3){
 				for(int j=0; j<nbSommets; j++){
 				 	if(sommetDejaPris[j]==0){
 						poids=retournePoid(graphe, tabParcours[i], j+1);
-						//printf("Poids BN1 : %f\n", poids); 
 						poids=poids+retournePoid(graphe, j+1, tabParcours[i+1]);
-						//printf("Poids BN2 : %f\n", poids); 
 						if (poids<poidsMin){
 							poidsMin=poids;
 							gauche=i;
 							sommetARajout=j+1;
-							//printf("BN %f : %f : %d : %d : %d : %d\n", poidsMin, poids, gauche, sommetARajout, sommetParcourut, i);
 						}
 					}
 				}
@@ -449,7 +387,6 @@ void solutionPlusPetitDetour(struct TypGraphe *graphe, int s1, int s2, int s3){
 		}
 		sommetParcourut++;
 		sommetDejaPris[sommetARajout-1]=1;
-		//printf("BR %f : %f : %d : %d : %d : %d\n", poidsMin, poids, gauche, sommetARajout, sommetParcourut, i);
 		ajoutDansTableau(tabParcours, nbSommets, gauche+1, sommetARajout);
 		poids=0;
 		poidsMin=9999;
@@ -464,6 +401,7 @@ void solutionPlusPetitDetour(struct TypGraphe *graphe, int s1, int s2, int s3){
 	}
 }
 
+//Fonction d'ajout d'un élément dans un tableau à un indice donnée
 void ajoutDansTableau(int *tableau, int tailleTableau, int indiceAjout, int sommetAAjouter){
 	int tableauTmp[tailleTableau];
 	int i=0;
@@ -479,6 +417,7 @@ void ajoutDansTableau(int *tableau, int tailleTableau, int indiceAjout, int somm
 	}	
 }
 
+//Fonction vérifiant si un sommet est dans un tableau de sommet : x => sommet, V => tableau de sommet
 int estDans(struct TypGraphe *graphe,int *V, int x, int ta) {
 	int i = 0;
 	int res = 1;
@@ -488,14 +427,13 @@ int estDans(struct TypGraphe *graphe,int *V, int x, int ta) {
 		}
 		i++;
 	}
-
 	return res;
 }
 
+//Fonction permettant d'extraire le sommet donc l'arête est la plus légère par rapport à un sommet de départ
 int extraireMin(struct TypGraphe *graphe, int *F, int tf, int x) {
 	int i,res = -1,indice=0;
 	float poid = 9999;
-
 	for (i = 0; i < tf; i++) {
 		if (F[i] != x) {
 			float tmp = retournePoid(graphe, x, F[i]);
@@ -506,24 +444,11 @@ int extraireMin(struct TypGraphe *graphe, int *F, int tf, int x) {
 			}
 		}
 	}
-
-	// Supprime le indice du Min
-	/*int t = 0;
-	int *tmp = malloc((tf - 1) * sizeof(int));
-	for (i = 0; i < tf; i++) {
-		if (i != indice) {
-			tmp[t] = 0;
-		}
-		t++;
-	}
-
-	F = tmp;*/
-
 	return res;
 }
 
+//Fonction créant un arbre de recouvrement et calculant la solution ARPM
 void solution_ARPM(struct TypGraphe *graphe) {
-
 	/*	POUR chaque sommet u de V FAIRE
 			prio[u] <- infini // tab de nbr 2222;
 			pere[u] <- null   // tab 
@@ -541,7 +466,6 @@ void solution_ARPM(struct TypGraphe *graphe) {
 				FSI
 			FPOUR
 		FTQ*/
-
 	// Initialisation de V
 	int i = 0;
 	int  nbrSommet = graphe->nbMaxSommets - 1;
@@ -551,81 +475,55 @@ void solution_ARPM(struct TypGraphe *graphe) {
 	for (i = 0; i < nbrSommet-1; i++) {
 		V[i] = i + 2;
 		F[i] = i + 2;
-		//printf("%d\n", i + 2);
 	}
-
 	int *pere = malloc(nbrSommet * sizeof(int));
 	float *prio = malloc(nbrSommet * sizeof(float));
-
 	i = 0;
 	for (i = 0; i < nbrSommet; i++) {
 		pere[i] = 33;
 		prio[i] = 2222;
 	}
-
 	int r = 0; // choisir un sommet de V (-1) les sommets commence par 1
 	i = 0;
 	pere[r] = 1;
-
 	int tailleF = nbrSommet-1;
-	//*F = V;
 	for (i = 0; i < nbrSommet - 1; i++) {
-		//V[i] = i + 2;
 		F[i] = i + 2;
-		//printf("%d\t", F[i]);
 	}
-	//pere[0] = 1;
 	while ( tailleF != 0) {
-		/*for (i = 0; i < tailleF; i++) {
-			printf("%d _",F[i] );
-		}
-		printf("\n");
-		for (i = 0; i < tailleF; i++) {
-			printf("%d -", pere[i]);
-		}*/
 		i = 0;
-		//printf("\n");
 		int t = 0;
 		int *tmp = malloc((tailleF - 1) * sizeof(int));
 		int u = extraireMin(graphe,F,tailleF,pere[r]); // arrete de plus petit poid(sommet qui correspond au bout de l'arrete depuis pere[r]
-		//printf("%d\n",u);
 		for (i = 0; i < tailleF; i++) {
 			if (F[i] != u) {
 				tmp[t] = F[i];
 				t++;
 			}
 		}
-
 		F = tmp;
 		tailleF--;
-
 		for (i = 1; i < nbrSommet; i++) {
 			if ((estDans(graphe,F,i+1,nbrSommet)==0) /*&& (retournePoid(graphe,u,i)<prio[i])*/) {
 				pere[r+1] = u;
 				prio[i] = retournePoid(graphe,u,i+1); 
-				//printf("found%d - %d = %f\n",u,i+1, retournePoid(graphe, u, i + 1));
 			}
 		}
-		//printf("\n");
 		if (tailleF == 0) {
 			pere[nbrSommet-1] = u;
 		}
 		r++;
 	}
-
 	i = 0;
-	float somme = 0;
-	
+	float somme = 0;	
 	for (i = 0; i < nbrSommet; i++) {
 		if (i == nbrSommet - 1) {
-			//somme += retournePoid(graphe, pere[i], pere[0]);
 		}
 		else {
 			somme += retournePoid(graphe, pere[i], pere[i + 1]);
 		}
-	}
-	
-	printf("La solution ARPM est : %f\n",somme);
+	}	
+	printf("La solution ARPM est : \n");
 	for (i = 0; i<nbrSommet; i++) {
 		if(i==nbrSommet-1){
 			printf("%d ", pere[i]);

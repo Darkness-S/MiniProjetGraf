@@ -3,20 +3,16 @@
 - Manipulation des listes chainées d'un des deux types décrites
 
 
-- Gestion des graphes stockés ( sous la forme d'un tableau de listes d'adjacence)
+- Gestion des graphes stockés ( sous la forme d'un tableau de listes d'adjacence) : TP2
+- Gestion des parcours dans un graphe : Projet TSP
 
 
-Programme principale = (Bibliothèque + MENU) :
-
-		- Creation
-		- Lecture
-		- InsertionSommet
-		- InsertionArete
-		- SuppressionSommet/Arete
-		- Affichage
-		- Sauvegarde
-		- Quitter
+Programme principale = (Bibliothèque + MENU + création graphe) :
+	Menu :
+		2- Parcours du plus proche voisin
+		3- Parcours du plus petit détour
+		4- Solution ARPM
+		5- Affichage
+		6- Quitter
 		
-		
--> Libération mémoire (valgrind)
 -> Message utilisateur simple lors des manipulation (retour d'erreur analysable)

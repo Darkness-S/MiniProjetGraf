@@ -1,4 +1,3 @@
-
 /* 
  * 
  * 
@@ -14,8 +13,9 @@
 #include "../include/libgraphProjet.h" 
 #include "../include/liblist.h"
 
+//Fonction d'affichage du TP2
 void afficheMenu(){
-	
+
 	printf("--------------------------------------------\n");
 	printf("--                  MENU                  --\n");
 	printf("--------------------------------------------\n");
@@ -24,14 +24,29 @@ void afficheMenu(){
 	printf("3- Insertion de sommet\n");
 	printf("4- Insertion d'arrete\n");
 	printf("5- Suppression d'un sommet\n");
-printf("6- Suppression d'une arrète\n");
-printf("7- Affichage\n");
-printf("8- Sauvegarde\n");
-printf("9- Quitter\n");
-printf("--------------------------------------------\n");
+	printf("6- Suppression d'une arrète\n");
+	printf("7- Affichage\n");
+	printf("8- Sauvegarde\n");
+	printf("9- Quitter\n");
+	printf("--------------------------------------------\n");
 
 }
 
+//Fonction d'affichage du projet
+void afficheMenuProjet(){
+	printf("--------------------------------------------\n");
+	printf("--                  MENU                  --\n");
+	printf("--------------------------------------------\n");
+	printf("1- Solution optimale\n");
+	printf("2- Parcours du plus proche voisin\n");
+	printf("3- Parcours du plus petit détour\n");
+	printf("4- Solution ARPM\n");
+	printf("5- Affichage\n");
+	printf("6- Quitter\n");
+	printf("--------------------------------------------\n");
+}
+
+//Fonction de choix du menu du TP2
 void choix(struct TypGraphe *graphe) {
 
 	int quit = 0;
@@ -77,79 +92,111 @@ void choix(struct TypGraphe *graphe) {
 
 }
 
-int main(int argc, char **argv)
-{
+void choixProjet(struct TypGraphe *graphe, int nbSommet) {
+	int quit = 0;
+	while (quit == 0) {
+		afficheMenuProjet();
+		int choix;
+		scanf("%d", &choix);
+		int sommetDepart, sommet1, sommet2, sommet3;
+		int bonChoix=0;
+		switch (choix) {
+		case 1:
+			solution_exacte(graphe);
+			break;
+		case 2:
+			while(bonChoix==0){
+				printf("Veuillez choisir le sommet de départ\n");
+				scanf("%d", &sommetDepart);
+				if ((sommetDepart==0)||(sommetDepart>nbSommet)){
+					printf("Le sommet n'existe pas dans ce graphe\n");
+				}else{
+					bonChoix++;
+				}
+			}
+			solutionPlusProcheVoisin(graphe, sommetDepart);
+			printf("\n");
+			bonChoix=0;
+			break;
+		case 3:
+			while(bonChoix==0){
+				printf("Veuillez choisir premier sommet de départ \n");
+				scanf("%d", &sommet1);
+				if ((sommet1==0)||(sommet1>nbSommet)){
+					printf("Le sommet n'existe pas dans ce graphe\n");
+				}else{
+					bonChoix++;
+				}
+			}
+			bonChoix=0;
+			while(bonChoix==0){
+				printf("Veuillez choisir second sommet de départ \n");
+				scanf("%d", &sommet2);
+				if ((sommet2==0)||(sommet2>nbSommet)){
+					printf("Le sommet n'existe pas dans ce graphe\n");
+				}else if(sommet2==sommet1){
+					printf("Le second sommet est le même que le premier\n");
+				}else{
+					bonChoix++;
+				}
+			}
+			bonChoix=0;
+			while(bonChoix==0){
+				printf("Veuillez choisir troisième sommet de départ \n");
+				scanf("%d", &sommet3);
+				if ((sommet3==0)||(sommet3>nbSommet)){
+					printf("Le sommet n'existe pas dans ce graphe\n");
+				}else if(sommet3==sommet1){
+					printf("Le troisième sommet est le même que le premier\n");
+				}else if(sommet3==sommet2){
+					printf("Le troisième sommet est le même que le second\n");
+				}else{
+					bonChoix++;
+				}
+			}
+			bonChoix=0;
+			solutionPlusPetitDetour(graphe, sommet1, sommet2, sommet3);
+			printf("\n");
+			break;
+		case 4:
+			solution_ARPM(graphe);
+			printf("\n");
+			break;
+		case 5:
+			afficheGraphe(graphe);
+			break;
+		case 6:
+			free(graphe);
+			quit = 1;
+			break;
+		}
+	}
+}
+
+//Main, création du graphe par rapport aux nombres de sommet et de la graine d'aléatoire donnée en paramètre
+int main(int argc, char **argv){
 	if (argc != 3) {
 		printf("Erreur nombre d'argument : N , g \n");
 		return 1;
 	}
-
 	struct TypGraphe *graphe = malloc(sizeof(struct TypGraphe));
-	//choix(graphe);
-
 	int n = atoi(argv[1]);
 	create(graphe, n, 'n');
-
 	int graine = atoi(argv[2]);
 	srand(graine);
-
 	int x[n];
 	int y[n];
-
 	sommetAleatoire(graphe, n, graine, x, y);
-	//afficheCoordonee(x, y, n);
 	creationArrete(graphe, n, x, y);
 	afficheGraphe(graphe);
-	filePrio *f = (filePrio *)calloc(1, sizeof(filePrio));
-	pushBestVoisin(f, graphe, 1);
-	printf("\n");
-	for (int i = 0; i < (graphe->nbMaxSommets) - 3; i++) {
-		printf("%d - ", pop(f));
-	}
-	printf("%d\n", pop(f));
-
 	int i, nbrSommet = graphe->nbMaxSommets - 1;
-	//printf("nbr :%d\n", factorial(nbrSommet));
-
-	int **liste;
+	/*int **liste;
 	liste = (int **)malloc(factorial(nbrSommet) * sizeof(int *));
 	for (i = 0; i < factorial(nbrSommet); i++) {
 		liste[i] = (int *)malloc((2 * nbrSommet) * sizeof(int));
 		liste[i] = NULL;
 	}
-
-	char *prefixe = malloc((2 * nbrSommet) * sizeof(int));
-	//printf("\n");
-	/*int tab[10]={1,5,6,7,2,8,0,0,0,0};
-	ajoutDansTableau(tab, 10, 3, 3);
-	for(int z=0; z<10; z++){
-		printf("%d - ", tab[z]);
-	} */
-	solutionPlusPetitDetour(graphe, 1, 2, 3);
-	
-	printf("\n");
-	int *V = malloc(nbrSommet * sizeof(int));
-
-	for (i = 0; i<nbrSommet; i++) {
-		V[i] = i + 1;
-		//printf("%d\n", i+1);
-	}
-
-	//int res = enumereCycles(liste, prefixe,0, V, nbrSommet,0);
-
-	//printf("%d\n", res);
-	//solution_exacte(graphe);
-
-	solutionPlusProcheVoisin(graphe, 1);
-
-	printf("\n");
-	solution_ARPM(graphe);
-	printf("\n");
-	
+	char *prefixe = malloc((2 * nbrSommet) * sizeof(int));*/
+	choixProjet(graphe, nbrSommet);
 	return 0;
 }
-
-
-
-
-

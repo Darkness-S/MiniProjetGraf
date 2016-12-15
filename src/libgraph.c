@@ -1,5 +1,6 @@
 #include "../include/libgraph.h" 
 
+//Fonction d'insertion de sommet dans un graphe
 void insertionSommet(struct TypGraphe *graphe){	
 	int i=0;
 	for(i=0; i<graphe->nbMaxSommets;i++){
@@ -9,7 +10,8 @@ void insertionSommet(struct TypGraphe *graphe){
 		}
 	}
 }
-	
+
+//Fonction de création d'un graphe	
 void create(struct TypGraphe *graphe, int nb, char oriente){	
 	graphe->nbMaxSommets = nb+1;
 	graphe->listesAdjacences = malloc (sizeof(struct TypVoisins*));	
@@ -31,6 +33,7 @@ void create(struct TypGraphe *graphe, int nb, char oriente){
 	insertionSommet(graphe);
 }
 
+//Fonction prenant les paramètres pour la fonction de création d'un graphe
 void creationGraphe(struct TypGraphe *graphe){
 	printf("-> Création d'un graphe\n");	
 	// Nombre de sommet 
@@ -44,6 +47,7 @@ void creationGraphe(struct TypGraphe *graphe){
 	create(graphe,nb,oriente);
 }
 
+//Fonction de suppression de sommet
 void suppressionSommet(struct TypGraphe *graphe){	
 	struct TypVoisins *listes;
 	listes = graphe->listesAdjacences;	
@@ -64,6 +68,7 @@ void suppressionSommet(struct TypGraphe *graphe){
 	graphe->listesAdjacences = tmp;	
 }
 
+//Fonction de recherche de l'existence d'un voisin pour un sommet
 int voisinExiste(struct TypGraphe *graphe, int sommet, int voisin){
 	struct TypVoisins *listes;
 	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));
@@ -91,6 +96,7 @@ int voisinExiste(struct TypGraphe *graphe, int sommet, int voisin){
 	return res;
 }
 
+//Fonction vérifiant l'existance d'un sommet
 int sommetExiste(struct TypGraphe *graphe, int sommet){
 	struct TypVoisins *listes;
 	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));
@@ -108,6 +114,7 @@ int sommetExiste(struct TypGraphe *graphe, int sommet){
 	return res;
 }
 
+//Fonction ajoutant une arête reliant deux sommets
 void ajouterArete(struct TypGraphe *graphe, int gauche, int droite, int poid){	
 	struct TypVoisins *listes;
 	listes = graphe->listesAdjacences;
@@ -153,6 +160,7 @@ void ajouterArete(struct TypGraphe *graphe, int gauche, int droite, int poid){
 	
 }
 
+//Fonction prenant les paramètres à donner à la fonction d'ajout d'une arête
 void insertionArete(struct TypGraphe *graphe){
 	printf("Numero de l'extremiter gauche : \n");
 	int gauche;
@@ -186,6 +194,7 @@ void insertionArete(struct TypGraphe *graphe){
 	}
 }
 
+//Fonction de suppresion d'une arête
 int supprArete(struct TypGraphe *graphe, int sommet, int voisin){
 	struct TypVoisins *listes;
 	struct TypVoisins *vtmp = malloc(sizeof(struct TypVoisins));	
@@ -212,6 +221,7 @@ int supprArete(struct TypGraphe *graphe, int sommet, int voisin){
 	return g;	
 }
 
+//Fonction prenant les paramètres à donner à la fonction de suppression d'une arête
 int suppressionArete(struct TypGraphe *graphe){
 	printf("Numero de l'extremiter gauche : \n");
 	int sommet;
@@ -222,11 +232,8 @@ int suppressionArete(struct TypGraphe *graphe){
 	return supprArete(graphe,sommet,voisin);
 }
 
+//Fonction d'affichage du graphe
 void afficheGraphe(struct TypGraphe *graphe){
-	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");
 	printf("# nombre maximum de sommets\n");
 	printf("%d\n",graphe->nbMaxSommets-1);
 	printf("# oriente\n");
@@ -259,12 +266,9 @@ void afficheGraphe(struct TypGraphe *graphe){
 		printf("\n");
 		i++;
 	}	
-/*	printf("\n");
-	printf("\n");
-	printf("\n");
-	printf("\n");	*/
 }
 
+//Fonction d'enregistrement d'un graphe dans un fichier
 int enregistrerGraphe(struct TypGraphe *graphe) {
 	FILE* save = NULL;
 	char saveName[50];
@@ -321,6 +325,7 @@ int enregistrerGraphe(struct TypGraphe *graphe) {
 	return 0;
 }
 
+//Fonction de chargement d'un graphe à partir d'un fichier
 int lectureGraphe(struct TypGraphe *graphe) {
 	FILE* load = NULL;
 	//Ouvre fichier
