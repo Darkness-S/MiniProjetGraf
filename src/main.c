@@ -48,15 +48,11 @@ void afficheMenuProjet(){
 
 //Fonction de choix du menu du TP2
 void choix(struct TypGraphe *graphe) {
-
 	int quit = 0;
 	while (quit == 0) {
-
 		afficheMenu();
-
 		int choix;
 		scanf("%d", &choix);
-
 		switch (choix) {
 		case 1:
 			creationGraphe(graphe);
@@ -87,9 +83,7 @@ void choix(struct TypGraphe *graphe) {
 			quit = 1;
 			break;
 		}
-
 	}
-
 }
 
 void choixProjet(struct TypGraphe *graphe, int nbSommet) {
