@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/libgraph.h"
+#include "../include/libgraphProjet.h" 
 #include "../include/liblist.h"
 
 void afficheMenu(){
@@ -100,16 +100,16 @@ int main(int argc, char **argv)
 	//afficheCoordonee(x, y, n);
 	creationArrete(graphe, n, x, y);
 	afficheGraphe(graphe);
-	heap_t *h = (heap_t *)calloc(1, sizeof(heap_t));
-	pushBestVoisin(h, graphe, 1);
+	filePrio *f = (filePrio *)calloc(1, sizeof(filePrio));
+	pushBestVoisin(f, graphe, 1);
 	printf("\n");
 	for (int i = 0; i < (graphe->nbMaxSommets) - 3; i++) {
-		printf("%d - ", pop(h));
+		printf("%d - ", pop(f));
 	}
-	printf("%d\n", pop(h));
+	printf("%d\n", pop(f));
 
 	int i, nbrSommet = graphe->nbMaxSommets - 1;
-	printf("nbr :%d\n", factorial(nbrSommet));
+	//printf("nbr :%d\n", factorial(nbrSommet));
 
 	int **liste;
 	liste = (int **)malloc(factorial(nbrSommet) * sizeof(int *));
@@ -119,20 +119,20 @@ int main(int argc, char **argv)
 	}
 
 	char *prefixe = malloc((2 * nbrSommet) * sizeof(int));
-	printf("\n");
+	//printf("\n");
 	/*int tab[10]={1,5,6,7,2,8,0,0,0,0};
 	ajoutDansTableau(tab, 10, 3, 3);
 	for(int z=0; z<10; z++){
 		printf("%d - ", tab[z]);
 	} */
-	solutionPlusPetitDetour(graphe, 1,4,5);
+	solutionPlusPetitDetour(graphe, 1, 2, 3);
 	
 	printf("\n");
 	int *V = malloc(nbrSommet * sizeof(int));
 
 	for (i = 0; i<nbrSommet; i++) {
 		V[i] = i + 1;
-		printf("%d\n", i+1);
+		//printf("%d\n", i+1);
 	}
 
 	//int res = enumereCycles(liste, prefixe,0, V, nbrSommet,0);
@@ -142,6 +142,9 @@ int main(int argc, char **argv)
 
 	solutionPlusProcheVoisin(graphe, 1);
 
+	printf("\n");
+	solution_ARPM(graphe);
+	printf("\n");
 	
 	return 0;
 }
