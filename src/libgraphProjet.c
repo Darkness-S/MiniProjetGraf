@@ -5,9 +5,11 @@ void sommetAleatoire(struct TypGraphe *graphe ,int n, int graine, int x[], int y
 	// creation de n sommet
 	// tirage aléatoire des coordonnées
 	int i = 0;
+	srand(graine);
 	for (i = 0; i < n; i++) {
 		int coordX = i;
 		int coordY = i;
+
 		// ALEATOIRE
 		x[i] = rand()%100;//coordX;
 		y[i] = rand()%100;//coordX;

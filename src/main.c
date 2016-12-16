@@ -186,7 +186,6 @@ int main(int argc, char **argv){
 	int n = atoi(argv[1]);
 	create(graphe, n, 'n');
 	int graine = atoi(argv[2]);
-	srand(graine);
 	int x[n];
 	int y[n];
 	sommetAleatoire(graphe, n, graine, x, y);
