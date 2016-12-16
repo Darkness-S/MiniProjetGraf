@@ -29,4 +29,4 @@ void solutionPlusPetitDetour(struct TypGraphe *graphe, int s1, int s2, int s3);
 void ajoutDansTableau(int *tableau, int tailleTableau, int indiceAjout, int sommetAAjouter);
 int estDans(struct TypGraphe *graphe,int *V, int x, int ta);
 int extraireMin(struct TypGraphe *graphe, int *F, int tf, int x);
-void solution_ARPM(struct TypGraphe *graphe);
+void solution_ARPM(struct TypGraphe *graphe, int sommetDepartARPM);

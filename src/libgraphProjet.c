@@ -448,7 +448,7 @@ int extraireMin(struct TypGraphe *graphe, int *F, int tf, int x) {
 }
 
 //Fonction créant un arbre de recouvrement et calculant la solution ARPM
-void solution_ARPM(struct TypGraphe *graphe) {
+void solution_ARPM(struct TypGraphe *graphe, int sommetDepartARPM) {
 	/*	POUR chaque sommet u de V FAIRE
 			prio[u] <- infini // tab de nbr 2222;
 			pere[u] <- null   // tab 
@@ -466,12 +466,12 @@ void solution_ARPM(struct TypGraphe *graphe) {
 				FSI
 			FPOUR
 		FTQ*/
-	// Initialisation de V
+	// Initialisation de V	
 	int i = 0;
+	int sommetDepart=sommetDepartARPM;
 	int  nbrSommet = graphe->nbMaxSommets - 1;
 	int *V = malloc(nbrSommet * sizeof(int));
 	int *F = malloc(nbrSommet * sizeof(int));
-
 	for (i = 0; i < nbrSommet-1; i++) {
 		V[i] = i + 2;
 		F[i] = i + 2;
@@ -485,11 +485,23 @@ void solution_ARPM(struct TypGraphe *graphe) {
 	}
 	int r = 0; // choisir un sommet de V (-1) les sommets commence par 1
 	i = 0;
-	pere[r] = 1;
+	int t=0;
+	pere[r] = sommetDepart;
 	int tailleF = nbrSommet-1;
+
 	for (i = 0; i < nbrSommet - 1; i++) {
-		F[i] = i + 2;
+		if(i+1==sommetDepart){				
+		}else{			
+			F[t] = i + 1;
+			t++;
+		} 
 	}
+		/*F[0]=1;
+		F[1]=2;
+		F[2]=4;
+		F[3]=5;
+		F[4]=6;
+		F[5]=7;*/
 	while ( tailleF != 0) {
 		i = 0;
 		int t = 0;

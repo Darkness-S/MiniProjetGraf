@@ -92,7 +92,7 @@ void choixProjet(struct TypGraphe *graphe, int nbSommet) {
 		afficheMenuProjet();
 		int choix;
 		scanf("%d", &choix);
-		int sommetDepart, sommet1, sommet2, sommet3;
+		int sommetDepart, sommetDepartARPM, sommet1, sommet2, sommet3;
 		int bonChoix=0;
 		switch (choix) {
 		case 1:
@@ -153,7 +153,16 @@ void choixProjet(struct TypGraphe *graphe, int nbSommet) {
 			printf("\n");
 			break;
 		case 4:
-			solution_ARPM(graphe);
+			while(bonChoix==0){
+				printf("Veuillez choisir le sommet de départ\n");
+				scanf("%d", &sommetDepartARPM);
+				if ((sommetDepartARPM==0)||(sommetDepartARPM>nbSommet)){
+					printf("Le sommet n'existe pas dans ce graphe\n");
+				}else{
+					bonChoix++;
+				}
+			}
+			solution_ARPM(graphe, sommetDepartARPM);
 			printf("\n");
 			break;
 		case 5:
