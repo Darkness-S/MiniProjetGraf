@@ -449,34 +449,35 @@ int extraireMin(struct TypGraphe *graphe, int *F, int tf, int x) {
 	return res;
 }
 
+//Fonction permettant d'effectuer un parcours en profondeur
+int parcourProfondeurRec(int noeud, int *pere,int tpere, int *res, int tres) {
+	res[tres] = noeud;
+	tres++;
+	// Pour tous les fils de noeuds on rappelle la fonction dessus
+	int i = 0;
+	for (i = 0; i < tpere; i++) {
+		int n;
+		if (pere[i] == noeud) {
+			n = i + 1;
+			tres = parcourProfondeurRec(n, pere, tpere, res, tres);
+		}
+	}
+
+	return tres;
+}
+
 //Fonction créant un arbre de recouvrement et calculant la solution ARPM
 void solution_ARPM(struct TypGraphe *graphe, int sommetDepartARPM) {
-	/*	POUR chaque sommet u de V FAIRE
-			prio[u] <- infini // tab de nbr 2222;
-			pere[u] <- null   // tab 
-		FPOUR
-
-		r <- choisir un sommet de V // sommet: 1
-		prio[r]<-0;
-		F<-V // F est la file de priorité
-		TQ F!=0 FAIRE
-			u<-extraireMin(F)
-			POUR chaque voisin v de u FAIRE
-				SI v de F et poids(u,v)<prio[v] ALORS
-					pere[v]<-u
-					prio[v]<-poids(u,v)
-				FSI
-			FPOUR
-		FTQ*/
+	
 	// Initialisation de V	
 	int i = 0;
-	int sommetDepart=sommetDepartARPM;
+	int sommetDepart = sommetDepartARPM;
 	int  nbrSommet = graphe->nbMaxSommets - 1;
+
 	int *V = malloc(nbrSommet * sizeof(int));
 	int *F = malloc(nbrSommet * sizeof(int));
-	for (i = 0; i < nbrSommet-1; i++) {
-		V[i] = i + 2;
-		F[i] = i + 2;
+	for (i = 0; i < nbrSommet ; i++) {
+		V[i] = i + 1;
 	}
 	int *pere = malloc(nbrSommet * sizeof(int));
 	float *prio = malloc(nbrSommet * sizeof(float));
@@ -485,65 +486,74 @@ void solution_ARPM(struct TypGraphe *graphe, int sommetDepartARPM) {
 		pere[i] = 33;
 		prio[i] = 2222;
 	}
-	int r = 0; // choisir un sommet de V (-1) les sommets commence par 1
-	i = 0;
-	int t=0;
-	pere[r] = sommetDepart;
-	int tailleF = nbrSommet-1;
+	int r = 0; 
+	int t = 0;
 
-	for (i = 0; i < nbrSommet - 1; i++) {
-		if(i+1==sommetDepart){				
-		}else{			
-			F[t] = i + 1;
-			t++;
-		} 
-	}
-		/*F[0]=1;
-		F[1]=2;
-		F[2]=4;
-		F[3]=5;
-		F[4]=6;
-		F[5]=7;*/
-	while ( tailleF != 0) {
-		i = 0;
-		int t = 0;
-		int *tmp = malloc((tailleF - 1) * sizeof(int));
-		int u = extraireMin(graphe,F,tailleF,pere[r]); // arrete de plus petit poid(sommet qui correspond au bout de l'arrete depuis pere[r]
-		for (i = 0; i < tailleF; i++) {
-			if (F[i] != u) {
-				tmp[t] = F[i];
-				t++;
-			}
-		}
-		F = tmp;
-		tailleF--;
-		for (i = 1; i < nbrSommet; i++) {
-			if ((estDans(graphe,F,i+1,nbrSommet)==0) /*&& (retournePoid(graphe,u,i)<prio[i])*/) {
-				pere[r+1] = u;
-				prio[i] = retournePoid(graphe,u,i+1); 
-			}
-		}
-		if (tailleF == 0) {
-			pere[nbrSommet-1] = u;
-		}
-		r++;
-	}
-	i = 0;
-	float somme = 0;	
+	prio[sommetDepart-1] = 0;
+	pere[sommetDepart - 1] = 0;
+	int tailleF = nbrSommet - 1;
+
 	for (i = 0; i < nbrSommet; i++) {
-		if (i == nbrSommet - 1) {
+		if (i + 1 == sommetDepart) {
 		}
 		else {
-			somme += retournePoid(graphe, pere[i], pere[i + 1]);
+			F[t] = i + 1;
+			t++;
 		}
-	}	
-	printf("La solution ARPM est : \n");
+	}
+
+	while (tailleF != 0) {
+		int u,j;
+		float poid = 2222;
+		int imin = -1;
+		for (u = 1; u < nbrSommet+1; u++) {
+			if (estDans(graphe, F, u, tailleF) != 0) {
+				for (j = 0; j < tailleF; j++) {
+					if (retournePoid(graphe, u, F[j]) <= poid && u!=F[j]) {
+						poid = retournePoid(graphe, u, F[j]);
+						imin = F[j];						
+					}
+				}
+				if (u != imin && imin!=-1) {
+					pere[imin - 1] = u;
+					t = 0;
+					int *tmp = F;
+					for (i = 0; i < nbrSommet; i++) {
+						if (tmp[i] == imin) {
+						}
+						else {
+							F[t] = tmp[i];
+							t++;
+						}
+					}
+					tailleF--;
+					break;
+				}
+			}			
+		}
+	}
+	// On a le tableau des pere[], on va faire un parcours en profondeur pour trouver le resultat
+	int *res = malloc(nbrSommet * sizeof(int));
+	int tres = 0;
+	for (i = 0; i < nbrSommet; i++) {
+		res[i] = 0;
+	}
+	// on prend la racine de l'arbre (sont pere est 0)
+	int racine;
+	for (i = 0; i < nbrSommet; i++) {
+		if (pere[i] == 0) {
+			racine = i + 1;
+		}
+	}
+	parcourProfondeurRec(racine, pere, nbrSommet, res, tres);
+	printf("Le resultat avec ARPM-Prim est : \n");
 	for (i = 0; i<nbrSommet; i++) {
-		if(i==nbrSommet-1){
-			printf("%d ", pere[i]);
-		}else{
-			printf("%d - ", pere[i]);
+		if (i == nbrSommet - 1) {
+			printf("%d ", res[i]);
 		}
-	}		
+		else {
+			printf("%d - ", res[i]);
+		}
+	}
 	printf("\n");
 }
