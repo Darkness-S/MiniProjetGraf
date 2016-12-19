@@ -1,4 +1,5 @@
 #include "./libgraph.h" 
+
 typedef struct {
     int prio;
     int sommet;

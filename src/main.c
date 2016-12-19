@@ -86,8 +86,22 @@ void choix(struct TypGraphe *graphe) {
 	}
 }
 
-void choixProjet(struct TypGraphe *graphe, int nbSommet) {
+void choixProjet(int n, int graine) {
+	struct TypGraphe *graphe = malloc(sizeof(struct TypGraphe));
+	create(graphe, n, 'n');
+	struct TypVoisins* listes;
+	listes = graphe->listesAdjacences;
+	listes++;
+	int x[n];
+	int y[n];
+	sommetAleatoire(graphe, n, graine, x, y);
+	creationArrete(graphe, n, x, y);
+	afficheGraphe(graphe);
+	int i, nbSommet = graphe->nbMaxSommets - 1;
 	int quit = 0;
+	int a[nbSommet];
+	int j;
+	int num = 1;
 	while (quit == 0) {
 		afficheMenuProjet();
 		int choix;
@@ -181,17 +195,9 @@ int main(int argc, char **argv){
 	if (argc != 3) {
 		printf("Erreur nombre d'argument : N , g \n");
 		return 1;
-	}
-	struct TypGraphe *graphe = malloc(sizeof(struct TypGraphe));
+	}	
 	int n = atoi(argv[1]);
-	create(graphe, n, 'n');
-	int graine = atoi(argv[2]);
-	int x[n];
-	int y[n];
-	sommetAleatoire(graphe, n, graine, x, y);
-	creationArrete(graphe, n, x, y);
-	afficheGraphe(graphe);
-	int i, nbrSommet = graphe->nbMaxSommets - 1;
+	int graine = atoi(argv[2]);	
 	/*int **liste;
 	liste = (int **)malloc(factorial(nbrSommet) * sizeof(int *));
 	for (i = 0; i < factorial(nbrSommet); i++) {
@@ -199,6 +205,6 @@ int main(int argc, char **argv){
 		liste[i] = NULL;
 	}
 	char *prefixe = malloc((2 * nbrSommet) * sizeof(int));*/
-	choixProjet(graphe, nbrSommet);
+	choixProjet(n, graine);
 	return 0;
 }

@@ -99,7 +99,7 @@ void pushBestVoisin(filePrio *f, struct TypGraphe *graphe,int num){
 	listes++;
 	int i=1;
 	while(listes->voisin != NULL){
-		if(i== num){
+		if(i == num){
 			struct TypVoisins *tmp ;
 			push(f, listes->poid, listes->voisin);
 			tmp = listes->voisinSuivant;
