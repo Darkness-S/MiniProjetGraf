@@ -97,11 +97,8 @@ void choixProjet(int n, int graine) {
 	sommetAleatoire(graphe, n, graine, x, y);
 	creationArrete(graphe, n, x, y);
 	afficheGraphe(graphe);
-	int i, nbSommet = graphe->nbMaxSommets - 1;
+	int nbSommet = graphe->nbMaxSommets - 1;
 	int quit = 0;
-	int a[nbSommet];
-	int j;
-	int num = 1;
 	while (quit == 0) {
 		afficheMenuProjet();
 		int choix;
@@ -185,6 +182,9 @@ void choixProjet(int n, int graine) {
 		case 6:
 			free(graphe);
 			quit = 1;
+			break;
+		default :
+			printf("Veuillez entrer un des choix proposé\n");
 			break;
 		}
 	}

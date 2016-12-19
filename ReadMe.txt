@@ -26,5 +26,6 @@ Regle de compilation :
 Exécution :
 	A la racine du projet (le dossier contenant les dossiers bin, include, lib, obj , save et src), compiler le projet, et entrer dans le terminal la commande : "./bin/ exec <N> <g>" avec N le nombre de sommet du graphe à créer, et g la graine de l'aléatoire pour la création des coordonnées des différents sommets.
 	
-Note : 
+Notes : 
 	Ce projet à été fait en rajout du mini-projet TP2 car nous réutilisons certaines des fonctions de ce mini-projet. Nous avons par conséquent séparer dans plusieurs fichier les fonctions du mini-projet du TP et du Projet TSP, et avons désactivé le menu du mini-projet du TP2. 
+	Depuis la séance du 16/12/2016, nous avons compléter la question 4.d (ajout du parcours en profondeur après création de l'arpm et prim). Nous n'avous cependant pas réussi à corriger notre file de priorité.
